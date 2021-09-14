@@ -59,32 +59,34 @@ namespace CfgComparator
             Display(analysis, showUnchanged, showModified, showAdded, showRemoved, startsValue);
         }
 
-        static void DisplaySection(Dictionary<int, string> data, string title, bool show, string keyStarts) {
-            DisplaySection(data, title, show, keyStarts, (value) => value);
+        static void DisplaySection(Dictionary<int, string> data, string title, ConsoleColor color, bool show, string keyStarts) {
+            DisplaySection(data, title, color, show, keyStarts, (value) => value);
         }
 
-        static void DisplaySection<T>(Dictionary<int, T> data, string title, bool show, string keyStarts, Func<T, string> formatValue)
+        static void DisplaySection<T>(Dictionary<int, T> data, string title, ConsoleColor color, bool show, string keyStarts, Func<T, string> formatValue)
         {
             Func<int, bool> showKey = (key) => keyStarts == "" || key.ToString().StartsWith(keyStarts);
             
             if (show) {
                 Console.WriteLine("---------------------------");
                 Console.WriteLine(title);
+                Console.ForegroundColor = color;
                 foreach (var item in data)
                 {
                     if (showKey(item.Key)) {
                         Console.WriteLine($"ID: {item.Key}; Value: {formatValue(item.Value)}");
                     }
                 }
+                Console.ResetColor();
             }
         }
 
         static void Display(CfgAnalysis.Result analysis, bool showUnchanged, bool showModified, bool showAdded, bool showRemoved, string keyStarts = "")
         {
-            DisplaySection(analysis.Unchanged, "Unchanged:", showUnchanged, keyStarts);
-            DisplaySection(analysis.Added, "Added:", showAdded, keyStarts);
-            DisplaySection(analysis.Removed, "Removed:", showRemoved, keyStarts);
-            DisplaySection(analysis.Modified, "Modified:", showModified, keyStarts, (value) => $"{value.Item1} -> {value.Item2}");
+            DisplaySection(analysis.Unchanged, "Unchanged:", ConsoleColor.Gray, showUnchanged, keyStarts);
+            DisplaySection(analysis.Added, "Added:", ConsoleColor.Green, showAdded, keyStarts);
+            DisplaySection(analysis.Removed, "Removed:", ConsoleColor.Red, showRemoved, keyStarts);
+            DisplaySection(analysis.Modified, "Modified:", ConsoleColor.Yellow, showModified, keyStarts, (value) => $"{value.Item1} -> {value.Item2}");
         }
     }
 }
