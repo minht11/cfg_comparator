@@ -8,9 +8,9 @@ namespace CfgComparator
 {
     class CfgReader
     {
-        private String GetStringFromFile(String path)
+        private string GetStringFromFile(String path)
         {
-            String result = null;
+            string result = null;
             using (var fileToDecompress = File.Open(path, FileMode.Open))
             {
                 using (var gz = new GZipStream(fileToDecompress, CompressionMode.Decompress))
@@ -25,9 +25,9 @@ namespace CfgComparator
 
             return result;
         }
-        public CfgRecord Read(String path)
+        public CfgRecord Read(string path)
         {
-            String result = GetStringFromFile(path);
+            string result = GetStringFromFile(path);
 
             CfgRecord record = new();
             foreach (var pair in result.Split(';'))
