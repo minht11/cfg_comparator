@@ -27,7 +27,6 @@ namespace CfgComparator
         }
         public CfgRecord Read(String path)
         {
-            Console.WriteLine($"Read {path}");
             String result = GetStringFromFile(path);
 
             CfgRecord record = new();
