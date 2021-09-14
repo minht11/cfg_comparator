@@ -34,18 +34,15 @@ namespace CfgComparator
             foreach (var pair in result.Split(';'))
             {
                 var valuePair = pair.Split(':');
-                if (valuePair.Length < 2)
-                {
-                    continue;
-                }
+                if (valuePair.Length < 2) continue;
 
                 var unknownId = valuePair[0];
                 var value = valuePair[1];
                 if (Int32.TryParse(unknownId, out var id))
                 {
-                    record.parameters.Add(id, value);
+                    record.Parameters.Add(id, value);
                 } else {
-                    record.info.Add(unknownId, value);
+                    record.Info.Add(unknownId, value);
                 }
             }
 

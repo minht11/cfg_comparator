@@ -4,7 +4,7 @@ namespace CfgComparator
 {
     class CfgRecord
     {
-        public Dictionary<string, string> info { get; set; } = new();
-        public Dictionary<int, string> parameters { get; set; } = new();
+        public Dictionary<string, string> Info { get; set; } = new();
+        public Dictionary<int, string> Parameters { get; set; } = new();
     }
 }
