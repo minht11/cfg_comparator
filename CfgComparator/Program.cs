@@ -49,9 +49,8 @@ namespace CfgComparator
                 startsValue = startsWithOption.Split('=')?[1];
             }
 
-            CfgReader reader = new();
-            var source = reader.Read(sourcePath);
-            var target = reader.Read(targetPath);
+            var source = CfgReader.Read(sourcePath);
+            var target = CfgReader.Read(targetPath);
             var analysis = CfgAnalysis.Analyse(source, target);
             
             ResultsUI.DisplayInfo(source, "Source");

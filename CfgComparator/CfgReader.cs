@@ -8,7 +8,7 @@ namespace CfgComparator
 {
     class CfgReader
     {
-        private string GetStringFromFile(String path)
+        static private string GetStringFromFile(String path)
         {
             string result = null;
             using (var fileToDecompress = File.Open(path, FileMode.Open))
@@ -25,7 +25,7 @@ namespace CfgComparator
 
             return result;
         }
-        public CfgRecord Read(string path)
+        static public CfgRecord Read(string path)
         {
             string result = GetStringFromFile(path);
 
