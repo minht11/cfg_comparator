@@ -12,7 +12,7 @@
       "program": "${workspaceFolder}/CfgComparator/bin/Debug/net5.0/CfgComparator.dll",
       "args": [],
       "cwd": "${workspaceFolder}/CfgComparator",
-      "console": "internalConsole",
+      "console": "integratedTerminal",
       "stopAtEntry": false
     },
     {
