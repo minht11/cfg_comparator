@@ -6,7 +6,11 @@ namespace CfgComparator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            String sourcePath = "./test-data/FMB920-default.cfg";
+            String targetPath = "./test-data/FMB920-modified.cfg";
+
+            CfgReader reader = new();
+            reader.Read(sourcePath); 
         }
     }
 }
