@@ -29,7 +29,7 @@ namespace CfgComparator
                 if (targetParams.ContainsKey(sourceKey))
                 {
                     var targetValue = targetParams[sourceKey];
-                    if (targetValue == sourcePair.Value) {
+                    if (targetValue == sourceValue) {
                         result.Unchanged.Add(sourceKey, sourceValue);
                     } else {
                         result.Modified.Add(sourceKey, Tuple.Create(sourceValue, targetValue));
