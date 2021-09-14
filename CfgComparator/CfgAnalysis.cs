@@ -6,7 +6,7 @@ namespace CfgComparator
 {
     class CfgAnalysis
     {
-        class Result
+        public class Result
         {
             public Dictionary<int, string> Unchanged { get; set; } = new();
             public Dictionary<int, Tuple<string, string>> Modified { get; set; } = new();
@@ -14,7 +14,7 @@ namespace CfgComparator
             public Dictionary<int, string> Removed { get; set; } = new();
 
         }
-        static Result Analyse(CfgRecord source, CfgRecord target)
+        static public Result Analyse(CfgRecord source, CfgRecord target)
         {
             var sourceParams = source.Parameters;
             // Do not modify original list.

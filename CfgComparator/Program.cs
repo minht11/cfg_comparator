@@ -10,7 +10,13 @@ namespace CfgComparator
             String targetPath = "./test-data/FMB920-modified.cfg";
 
             CfgReader reader = new();
-            reader.Read(sourcePath); 
+            var source = reader.Read(sourcePath);
+            var target = reader.Read(targetPath);
+            var analysis = CfgAnalysis.Analyse(source, target);
+            foreach (var a in analysis.Modified)
+            {
+                Console.WriteLine($"{a.Key} {a.Value}");
+            }
         }
     }
 }
