@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CfgComparator.Configuration
 {
-    class Analysis
+    public class Analysis
     {
         public class Result
         {

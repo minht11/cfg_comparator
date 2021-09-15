@@ -5,7 +5,7 @@ using System;
 
 namespace CfgComparator.Configuration
 {
-    class Reader
+    public class Reader
     {
         static private string GetStringFromFile(string path)
         {

@@ -4,7 +4,7 @@ using CfgComparator.Configuration;
 
 namespace CfgComparator
 {
-    class ResultsUI
+    public class ResultsUI
     {
         static private void DisplaySeparator()
         {

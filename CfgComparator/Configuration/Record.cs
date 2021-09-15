@@ -2,7 +2,7 @@
 
 namespace CfgComparator.Configuration
 {
-    class Record
+    public class Record
     {
         public string Filename { get; set; } = "";
         public Dictionary<string, string> Info { get; set; } = new();
