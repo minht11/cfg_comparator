@@ -21,33 +21,28 @@ namespace CfgComparator
             Console.WriteLine($"{modified} : show modified");
             Console.WriteLine($"{starts}* : keys should start with *");
 
-            string line = Console.ReadLine();
-            if (line == "" || line == null) {
+            string line = Console.ReadLine() ?? "";
+            if (line == "") {
                 return;
             }
 
             var input = new List<string>(line.Split(' '));
-            var sourcePath = input?[0];
-            var targetPath = input?[1];
-            input.RemoveAt(0);
-            input.RemoveAt(0);
+            var sourcePath = input?[0] ?? "";
+            var targetPath = input?[1] ?? "";
+            input!.RemoveAt(0);
+            input!.RemoveAt(0);
 
-            if (sourcePath == null || targetPath == null)
+            if (sourcePath == "" || targetPath == "")
             {
                 Console.WriteLine("Source and target paths cannot be empty");
                 return;
             }
 
-            bool showUnchanged = input.Contains(unchanged);
-            bool showAdded = input.Contains(added);
-            bool showRemoved = input.Contains(removed);
-            bool showModified = input.Contains(modified);
-            string startsWithOption = input.Find((value) => value.StartsWith(starts));
-            string startsValue = "";
-            if (startsWithOption != null)
-            {
-                startsValue = startsWithOption.Split('=')?[1];
-            }
+            bool showUnchanged = input!.Contains(unchanged);
+            bool showAdded = input!.Contains(added);
+            bool showRemoved = input!.Contains(removed);
+            bool showModified = input!.Contains(modified);
+            string startsValue = input!.Find((value) => value.StartsWith(starts))?.Split('=')?[1] ?? "";
 
             var source = CfgReader.Read(sourcePath);
             var target = CfgReader.Read(targetPath);
