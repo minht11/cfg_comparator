@@ -6,6 +6,9 @@ namespace CfgComparator.Configuration
 {
     public class Analysis
     {
+        /// <summary>
+        /// Two <see cref="CfgComparator.Configuration.Record" />s analysis result.
+        /// </summary>
         public class Result
         {
             public Dictionary<int, string> Unchanged { get; set; } = new();
@@ -13,6 +16,12 @@ namespace CfgComparator.Configuration
             public Dictionary<int, string> Added { get; set; } = new();
             public Dictionary<int, string> Removed { get; set; } = new();
         }
+        
+        /// <summary>
+        /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s and gives analysis about them.
+        /// </summary>
+        /// <param name="source">The source configuration <see cref="CfgComparator.Configuration.Record" /></param>
+        /// <param name="source">The target configuration <see cref="CfgComparator.Configuration.Record" /></param>
         static public Result Analyse(Record source, Record target)
         {
             var sourceParams = source.Parameters;

@@ -1,12 +1,19 @@
 ﻿using System.Text;
 using System.IO.Compression;
 using System.IO;
-using System;
 
 namespace CfgComparator.Configuration
+
 {
+    /// <summary>
+    /// Class for reading configuration file data.
+    /// </summary>
     public class Reader
     {
+        /// <summary>
+        /// Reads GZIPed file contents from disk and returns them as string.
+        /// </summary>
+        /// <param name="path">The file path.</param>
         static private string ReadFileContents(string path)
         {
             using (var fileToDecompress = File.Open(path, FileMode.Open))
@@ -15,6 +22,10 @@ namespace CfgComparator.Configuration
             return sr.ReadToEnd();
         }
 
+        /// <summary>
+        /// Reads configuration file contents from disk and returns Record of the data.
+        /// </summary>
+        /// <param name="path">The configuration file path.</param>
         static public Record Read(string path)
         {
             string fileContents = ReadFileContents(path);
