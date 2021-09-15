@@ -10,15 +10,9 @@ namespace CfgComparator.Configuration
         static private string ReadFileContents(string path)
         {
             using (var fileToDecompress = File.Open(path, FileMode.Open))
-            {
-                using (var gz = new GZipStream(fileToDecompress, CompressionMode.Decompress))
-                {
-                    using (var sr = new StreamReader(gz, Encoding.UTF8))
-                    {
-                        return sr.ReadToEnd();
-                    }
-                }
-            }
+            using (var gz = new GZipStream(fileToDecompress, CompressionMode.Decompress))
+            using (var sr = new StreamReader(gz, Encoding.UTF8))
+            return sr.ReadToEnd();
         }
 
         static public Record Read(string path)
@@ -35,7 +29,7 @@ namespace CfgComparator.Configuration
 
                 var unknownId = idValuePair[0];
                 var value = idValuePair[1];
-                if (Int32.TryParse(unknownId, out var id))
+                if (int.TryParse(unknownId, out var id))
                 {
                     record.Parameters.Add(id, value);
                 } else {
