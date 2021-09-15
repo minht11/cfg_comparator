@@ -25,11 +25,14 @@ namespace CfgComparator
 
             return result;
         }
+
         static public CfgRecord Read(string path)
         {
             string result = GetStringFromFile(path);
 
             CfgRecord record = new();
+            record.Filename = Path.GetFileName(path);
+
             foreach (var pair in result.Split(';'))
             {
                 var valuePair = pair.Split(':');

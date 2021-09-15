@@ -48,6 +48,9 @@ namespace CfgComparator
         {
             DisplaySeparator();
             Console.WriteLine($"{name} configuration:");
+            Console.WriteLine(record.Filename);
+            Console.WriteLine("");
+
             foreach (var item in record.Info) {
                 Console.WriteLine($"{item.Key}: {item.Value}");
             }
