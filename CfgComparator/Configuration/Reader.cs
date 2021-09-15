@@ -1,12 +1,11 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.IO.Compression;
 using System.IO;
 using System;
 
-namespace CfgComparator
+namespace CfgComparator.Configuration
 {
-    class CfgReader
+    class Reader
     {
         static private string GetStringFromFile(string path)
         {
@@ -19,18 +18,17 @@ namespace CfgComparator
                     {
                         result = sr.ReadToEnd();
                     }
-
                 }
             }
 
             return result;
         }
 
-        static public CfgRecord Read(string path)
+        static public Record Read(string path)
         {
             string result = GetStringFromFile(path);
 
-            CfgRecord record = new();
+            Record record = new();
             record.Filename = Path.GetFileName(path);
 
             foreach (var pair in result.Split(';'))

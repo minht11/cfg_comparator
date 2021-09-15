@@ -2,9 +2,9 @@
 using System.Linq;
 using System.Collections.Generic;
 
-namespace CfgComparator
+namespace CfgComparator.Configuration
 {
-    class CfgAnalysis
+    class Analysis
     {
         public class Result
         {
@@ -12,9 +12,8 @@ namespace CfgComparator
             public Dictionary<int, Tuple<string, string>> Modified { get; set; } = new();
             public Dictionary<int, string> Added { get; set; } = new();
             public Dictionary<int, string> Removed { get; set; } = new();
-
         }
-        static public Result Analyse(CfgRecord source, CfgRecord target)
+        static public Result Analyse(Record source, Record target)
         {
             var sourceParams = source.Parameters;
             // Do not modify original list.

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using CfgComparator.Configuration;
 
 namespace CfgComparator
 {
@@ -33,7 +34,7 @@ namespace CfgComparator
             }
         }
 
-        static public void DisplayAnalysis(CfgAnalysis.Result analysis, bool showUnchanged, bool showModified, bool showAdded, bool showRemoved, string keyStarts = "")
+        static public void DisplayAnalysis(Analysis.Result analysis, bool showUnchanged, bool showModified, bool showAdded, bool showRemoved, string keyStarts = "")
         {
             DisplaySeparator();
             Console.WriteLine($"U: {analysis.Unchanged.Count} M: {analysis.Modified.Count} R: {analysis.Removed.Count} A: {analysis.Added.Count}");
@@ -44,7 +45,7 @@ namespace CfgComparator
             DisplayAnalysisSection(analysis.Modified, "Modified:", ConsoleColor.Yellow, showModified, keyStarts, (value) => $"{value.Item1} -> {value.Item2}");
         }
 
-        static public void DisplayInfo(CfgRecord record, string name)
+        static public void DisplayInfo(Record record, string name)
         {
             DisplaySeparator();
             Console.WriteLine($"{name} configuration:");

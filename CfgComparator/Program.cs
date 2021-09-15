@@ -44,9 +44,9 @@ namespace CfgComparator
             bool showModified = input!.Contains(modified);
             string startsValue = input!.Find((value) => value.StartsWith(starts))?.Split('=')?[1] ?? "";
 
-            var source = CfgReader.Read(sourcePath);
-            var target = CfgReader.Read(targetPath);
-            var analysis = CfgAnalysis.Analyse(source, target);
+            var source = Configuration.Reader.Read(sourcePath);
+            var target = Configuration.Reader.Read(targetPath);
+            var analysis = Configuration.Analysis.Analyse(source, target);
             
             ResultsUI.DisplayInfo(source, "Source");
             ResultsUI.DisplayInfo(target, "Target");
