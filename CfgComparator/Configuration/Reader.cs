@@ -7,7 +7,7 @@ namespace CfgComparator.Configuration
 {
     public class Reader
     {
-        static private string GetStringFromFile(string path)
+        static private string ReadGZipFileAsString(string path)
         {
             string? result = null;
             using (var fileToDecompress = File.Open(path, FileMode.Open))
@@ -26,7 +26,7 @@ namespace CfgComparator.Configuration
 
         static public Record Read(string path)
         {
-            string result = GetStringFromFile(path);
+            string result = ReadGZipFileAsString(path);
 
             Record record = new();
             record.Filename = Path.GetFileName(path);
