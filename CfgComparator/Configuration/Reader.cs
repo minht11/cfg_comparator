@@ -7,37 +7,34 @@ namespace CfgComparator.Configuration
 {
     public class Reader
     {
-        static private string ReadGZipFileAsString(string path)
+        static private string ReadFileContents(string path)
         {
-            string? result = null;
             using (var fileToDecompress = File.Open(path, FileMode.Open))
             {
                 using (var gz = new GZipStream(fileToDecompress, CompressionMode.Decompress))
                 {
                     using (var sr = new StreamReader(gz, Encoding.UTF8))
                     {
-                        result = sr.ReadToEnd();
+                        return sr.ReadToEnd();
                     }
                 }
             }
-
-            return result;
         }
 
         static public Record Read(string path)
         {
-            string result = ReadGZipFileAsString(path);
+            string fileContents = ReadFileContents(path);
 
             Record record = new();
             record.Filename = Path.GetFileName(path);
 
-            foreach (var pair in result.Split(';'))
+            foreach (var idValueLine in fileContents.Split(';'))
             {
-                var valuePair = pair.Split(':');
-                if (valuePair.Length < 2) continue;
+                var idValuePair = idValueLine.Split(':');
+                if (idValuePair.Length < 2) continue;
 
-                var unknownId = valuePair[0];
-                var value = valuePair[1];
+                var unknownId = idValuePair[0];
+                var value = idValuePair[1];
                 if (Int32.TryParse(unknownId, out var id))
                 {
                     record.Parameters.Add(id, value);
