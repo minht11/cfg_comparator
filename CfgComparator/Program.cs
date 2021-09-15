@@ -22,21 +22,19 @@ namespace CfgComparator
             Console.WriteLine($"{starts}* : keys should start with *");
 
             string line = Console.ReadLine() ?? "";
-            if (line == "") {
-                return;
-            }
 
             var input = new List<string>(line.Split(' '));
             var sourcePath = input?[0] ?? "";
             var targetPath = input?[1] ?? "";
-            input!.RemoveAt(0);
-            input!.RemoveAt(0);
 
             if (sourcePath == "" || targetPath == "")
             {
                 Console.WriteLine("Source and target paths cannot be empty");
                 return;
             }
+            // Here input will always have at least 2 elements inside.
+            input!.RemoveAt(0);
+            input!.RemoveAt(0);
 
             bool showUnchanged = input!.Contains(unchanged);
             bool showAdded = input!.Contains(added);
