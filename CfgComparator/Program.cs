@@ -3,7 +3,7 @@ using System;
 
 namespace CfgComparator
 {
-    public class Program
+    class Program
     {
         static void Main(string[] args)
         {
