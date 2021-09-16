@@ -1,55 +1,50 @@
-﻿using System;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CfgComparator.Configuration
 {
     public class Analysis
     {
         /// <summary>
-        /// Two <see cref="CfgComparator.Configuration.Record" />s analysis result.
-        /// </summary>
-        public class Result
-        {
-            public Dictionary<int, string> Unchanged { get; set; } = new();
-            public Dictionary<int, Tuple<string, string>> Modified { get; set; } = new();
-            public Dictionary<int, string> Added { get; set; } = new();
-            public Dictionary<int, string> Removed { get; set; } = new();
-        }
-        
-        /// <summary>
-        /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s and gives analysis about them.
+        /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s and gives analysis about them
+        /// in the form of <see cref="CfgComparator.Configuration.ComparedParamater" /> list. 
         /// </summary>
         /// <param name="source">The source configuration <see cref="CfgComparator.Configuration.Record" /></param>
         /// <param name="source">The target configuration <see cref="CfgComparator.Configuration.Record" /></param>
-        static public Result Analyse(Record source, Record target)
+        public static List<ComparedParameter> Analyse(Record source, Record target)
         {
             var sourceParams = source.Parameters;
             // Do not modify original list.
-            var targetParams = new Dictionary<int, string>(target.Parameters);
+            var targetParams = new List<Parameter>(target.Parameters);
 
-            Result result = new();
+            List<ComparedParameter> comparedParameters = new();
 
-            foreach (var sourcePair in sourceParams)
+            foreach (var sourceParam in sourceParams)
             {
-                var sourceKey = sourcePair.Key;
-                var sourceValue = sourcePair.Value;
-                if (targetParams.ContainsKey(sourceKey))
-                {
-                    var targetValue = targetParams[sourceKey];
-                    if (targetValue == sourceValue) {
-                        result.Unchanged.Add(sourceKey, sourceValue);
-                    } else {
-                        result.Modified.Add(sourceKey, Tuple.Create(sourceValue, targetValue));
-                    }
-                    targetParams.Remove(sourceKey);
-                } else {
-                    result.Removed.Add(sourceKey, sourceValue);
-                }
-            }
-            result.Added = targetParams;
+                var sourceID = sourceParam.ID;
+                var sourceValue = sourceParam.Value;
 
-            return result;
+                var targetValue = targetParams.Find((t) => t.ID == sourceID);
+                if (targetValue != null)
+                {
+                    targetParams.Remove(targetValue);
+                }
+
+                var (status, changedValue) = targetValue switch
+                {
+                    null => (ComparisonStatus.Removed, null),
+                    { Value: var value } when value != sourceValue => (ComparisonStatus.Modified, value),
+                    _ => (ComparisonStatus.Unchanged, null),
+                };
+
+                comparedParameters.Add(new(status, sourceID, sourceValue, changedValue));
+            }
+
+            foreach (var targetParam in targetParams)
+            {
+                comparedParameters.Add(new(ComparisonStatus.Added, targetParam.ID, targetParam.Value, null));
+            }
+
+            return comparedParameters;
         }
     }
 }

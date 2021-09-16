@@ -14,7 +14,7 @@ namespace CfgComparator.Configuration
         /// Reads GZIPed file contents from disk and returns them as string.
         /// </summary>
         /// <param name="path">The file path.</param>
-        static private string ReadFileContents(string path)
+        private static string ReadFileContents(string path)
         {
             using (var fileToDecompress = File.Open(path, FileMode.Open))
             using (var gz = new GZipStream(fileToDecompress, CompressionMode.Decompress))
@@ -23,28 +23,31 @@ namespace CfgComparator.Configuration
         }
 
         /// <summary>
-        /// Reads configuration file contents from disk and returns Record of the data.
+        /// Reads configuration file contents from disk and returns them as Record of the data.
         /// </summary>
         /// <param name="path">The configuration file path.</param>
-        static public Record Read(string path)
+        public static Record Read(string path)
         {
             string fileContents = ReadFileContents(path);
 
-            Record record = new();
-            record.Filename = Path.GetFileName(path);
+            Record record = new(filename: Path.GetFileName(path));
 
             foreach (var idValueLine in fileContents.Split(';'))
             {
                 var idValuePair = idValueLine.Split(':');
                 if (idValuePair.Length < 2) continue;
 
-                var unknownId = idValuePair[0];
+                var id = idValuePair[0];
                 var value = idValuePair[1];
-                if (int.TryParse(unknownId, out var id))
+
+                Parameter parameter = new(id, value);
+                if (int.TryParse(id, out _))
                 {
-                    record.Parameters.Add(id, value);
-                } else {
-                    record.Info.Add(unknownId, value);
+                    record.Parameters.Add(parameter);
+                }
+                else
+                {
+                    record.Info.Add(parameter);
                 }
             }
 

@@ -6,18 +6,23 @@ namespace CfgComparator.Configuration
     {
         
         /// <summary>
-        /// Filename of configuration file from which this data was read.
+        /// Filename of the configuration file from which data was read.
         /// </summary>
-        public string Filename { get; set; } = "";
+        public string Filename { get; }
         
         /// <summary>
-        /// Information about the device which is not used to configure the device itself.
+        /// Information about the device itself which is not used to configure the device itself.
         /// </summary>
-        public Dictionary<string, string> Info { get; set; } = new();
+        public List<Parameter> Info { get; } = new();
         
         /// <summary>
-        /// Parameters dictionary storing various device options.
+        /// Parameters list storing various device configuration options.
         /// </summary>
-        public Dictionary<int, string> Parameters { get; set; } = new();
+        public List<Parameter> Parameters { get; } = new();
+
+        public Record(string filename)
+        {
+            Filename = filename;
+        }
     }
 }

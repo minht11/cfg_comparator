@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System;
 using CfgComparator.Configuration;
 
@@ -11,41 +12,74 @@ namespace CfgComparator
             Console.WriteLine("---------------------------");
         }
 
-        static private void DisplayAnalysisSection(Dictionary<int, string> data, string title, ConsoleColor color, bool show, string keyStarts)
-        {
-            DisplayAnalysisSection(data, title, color, show, keyStarts, (value) => value);
+        private class DisplayAnalysisItemOptions {
+            public string Title { get; set; } = "";
+            public ConsoleColor Color { get; set; }
+            public string KeyStarts { get; set; } = "";
+            public bool Visible { get; set; }
+            public bool ShowChangedValue { get; set; } = false;
         }
 
-        static private void DisplayAnalysisSection<T>(Dictionary<int, T> data, string title, ConsoleColor color, bool show, string keyStarts, Func<T, string> formatValue)
+        private static void DisplayAnalysisItem(List<ComparedParameter> data, DisplayAnalysisItemOptions options)
         {
-            Func<int, bool> showKey = (key) => keyStarts == "" || key.ToString().StartsWith(keyStarts);
+            var keyStarts = options.KeyStarts;
+            Func<string, bool> showKey = (key) => keyStarts == "" || key.ToString().StartsWith(keyStarts);
             
-            if (show) {
+            if (options.Visible) {
                 DisplaySeparator();
-                Console.WriteLine(title);
-                Console.ForegroundColor = color;
+                Console.WriteLine(options.Title);
+                Console.ForegroundColor = options.Color;
                 foreach (var item in data)
                 {
-                    if (showKey(item.Key)) {
-                        Console.WriteLine($"ID: {item.Key}; Value: {formatValue(item.Value)}");
+                    if (showKey(item.ID)) {
+                        var changedValue = options.ShowChangedValue ? $" -> {item.ChangedValue}" : "";
+                        Console.WriteLine($"ID: {item.ID}; Value: {item.Value}{changedValue}");
                     }
                 }
                 Console.ResetColor();
             }
         }
 
-        static public void DisplayAnalysis(Analysis.Result analysis, bool showUnchanged, bool showModified, bool showAdded, bool showRemoved, string keyStarts = "")
+        public static void DisplayAnalysis(List<ComparedParameter> changes, bool showUnchanged, bool showModified, bool showAdded, bool showRemoved, string keyStarts = "")
         {
-            DisplaySeparator();
-            Console.WriteLine($"U: {analysis.Unchanged.Count} M: {analysis.Modified.Count} R: {analysis.Removed.Count} A: {analysis.Added.Count}");
+            var changesDict = changes.GroupBy((p) => p.Status).ToDictionary((c) => c.Key, (c) => c.ToList());
             
-            DisplayAnalysisSection(analysis.Unchanged, "Unchanged:", ConsoleColor.Gray, showUnchanged, keyStarts);
-            DisplayAnalysisSection(analysis.Added, "Added:", ConsoleColor.Green, showAdded, keyStarts);
-            DisplayAnalysisSection(analysis.Removed, "Removed:", ConsoleColor.Red, showRemoved, keyStarts);
-            DisplayAnalysisSection(analysis.Modified, "Modified:", ConsoleColor.Yellow, showModified, keyStarts, (value) => $"{value.Item1} -> {value.Item2}");
+            var unchanged = changesDict[ComparisonStatus.Unchanged];
+            var modified = changesDict[ComparisonStatus.Modified];
+            var removed = changesDict[ComparisonStatus.Removed];
+            var added = changesDict[ComparisonStatus.Added];
+
+            DisplaySeparator();
+            Console.WriteLine($"U: {unchanged.Count} M: {modified.Count} R: {removed.Count} A: {added.Count}");
+
+            DisplayAnalysisItem(unchanged, new DisplayAnalysisItemOptions {
+                Title = "Unchanged",
+                Color = ConsoleColor.Gray,
+                KeyStarts = keyStarts,
+                Visible = showUnchanged,
+            });
+            DisplayAnalysisItem(added, new DisplayAnalysisItemOptions {
+                Title = "Added",
+                Color = ConsoleColor.Green,
+                KeyStarts = keyStarts,
+                Visible = showAdded,
+            });
+            DisplayAnalysisItem(removed, new DisplayAnalysisItemOptions {
+                Title = "Removed",
+                Color = ConsoleColor.Red,
+                KeyStarts = keyStarts,
+                Visible = showRemoved,
+            });
+            DisplayAnalysisItem(modified, new DisplayAnalysisItemOptions {
+                Title = "Modified",
+                Color = ConsoleColor.Yellow,
+                KeyStarts = keyStarts,
+                ShowChangedValue = true,
+                Visible = showModified,
+            });
         }
 
-        static public void DisplayInfo(Record record, string name)
+        public static void DisplayInfo(Record record, string name)
         {
             DisplaySeparator();
             Console.WriteLine($"{name} configuration:");
@@ -53,7 +87,7 @@ namespace CfgComparator
             Console.WriteLine("");
 
             foreach (var item in record.Info) {
-                Console.WriteLine($"{item.Key}: {item.Value}");
+                Console.WriteLine($"{item.ID}: {item.Value}");
             }
         }
     }
