@@ -9,9 +9,9 @@
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/CfgComparator/bin/Debug/net5.0/CfgComparator.dll",
+      "program": "${workspaceFolder}/src/bin/Debug/net5.0/CfgComparator.dll",
       "args": [],
-      "cwd": "${workspaceFolder}/CfgComparator",
+      "cwd": "${workspaceFolder}/src",
       "console": "integratedTerminal",
       "stopAtEntry": false
     },
