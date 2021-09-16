@@ -25,23 +25,21 @@ namespace CfgComparator
             string line = Console.ReadLine() ?? "";
 
             var input = new List<string>(line.Split(' '));
-            var sourcePath = input?[0] ?? "";
-            var targetPath = input?[1] ?? "";
+            var sourcePath = input.ElementAtOrDefault(0) ?? "";
+            var targetPath = input.ElementAtOrDefault(1) ?? "";
 
             if (sourcePath == "" || targetPath == "")
             {
                 Console.WriteLine("Source and target paths cannot be empty");
                 return;
             }
-            // Here input will always have at least 2 elements inside.
-            input!.RemoveAt(0);
-            input!.RemoveAt(0);
+            input.RemoveRange(0, 2);
 
-            bool showUnchanged = input!.Contains(unchanged);
-            bool showAdded = input!.Contains(added);
-            bool showRemoved = input!.Contains(removed);
-            bool showModified = input!.Contains(modified);
-            string startsValue = input!.Find((value) => value.StartsWith(starts))?.Split('=')?[1] ?? "";
+            bool showUnchanged = input.Contains(unchanged);
+            bool showAdded = input.Contains(added);
+            bool showRemoved = input.Contains(removed);
+            bool showModified = input.Contains(modified);
+            string startsValue = input.Find((value) => value.StartsWith(starts))?.Split('=')?[1] ?? "";
 
             var source = Configuration.Reader.Read(sourcePath);
             var target = Configuration.Reader.Read(targetPath);
