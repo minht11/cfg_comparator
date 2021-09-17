@@ -43,7 +43,7 @@ namespace CfgComparator
 
             var source = Configuration.Reader.Read(sourcePath);
             var target = Configuration.Reader.Read(targetPath);
-            var analysis = Configuration.Analysis.Analyse(source, target);
+            var analysis = Configuration.Analysis.Compare(source, target);
             
             ResultsUI.DisplayInfo(source, "Source");
             ResultsUI.DisplayInfo(target, "Target");

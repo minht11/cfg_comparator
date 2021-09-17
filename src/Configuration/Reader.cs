@@ -11,7 +11,7 @@ namespace CfgComparator.Configuration
     public class Reader
     {
         /// <summary>
-        /// Reads GZIPed file contents from disk.
+        /// Reads GZIPed file contents from disk as string.
         /// </summary>
         /// <param name="path">The file path.</param>
         private static string ReadFileContents(string path)
@@ -30,7 +30,7 @@ namespace CfgComparator.Configuration
         {
             string fileContents = ReadFileContents(path);
 
-            Record record = new(filename: Path.GetFileName(path));
+            Record record = new(fileName: Path.GetFileName(path));
 
             foreach (var idValueLine in fileContents.Split(';'))
             {

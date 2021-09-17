@@ -4,12 +4,13 @@ namespace CfgComparator.Configuration
 {
     public class Analysis
     {
+        // TODO. This comment is not useful.
         /// <summary>
         /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s.
         /// </summary>
         /// <param name="source">The source configuration <see cref="CfgComparator.Configuration.Record" /></param>
         /// <param name="source">The target configuration <see cref="CfgComparator.Configuration.Record" /></param>
-        public static List<ComparedParameter> Analyse(Record source, Record target)
+        public static List<ComparedParameter> Compare(Record source, Record target)
         {
             var sourceParams = source.Parameters;
             // Do not modify original list.

@@ -40,6 +40,14 @@ namespace CfgComparator
             }
         }
 
+        /// <summary>
+        /// Shows summary of all changes and depending on the options list of individual changes.
+        /// </summary>
+        /// <param name="showUnchanged">Show list of unchanged items</param>
+        /// <param name="showModified">Show list of modified items</param>
+        /// <param name="showAdded">Show list of added items</param>
+        /// <param name="showRemoved">Show list of removed items</param>
+        /// <param name="keyStarts">Show ids which start with this value or leave empty to show everything</param>
         public static void DisplayAnalysis(List<ComparedParameter> changes, bool showUnchanged, bool showModified, bool showAdded, bool showRemoved, string keyStarts = "")
         {
             var changesDict = changes.GroupBy((p) => p.Status).ToDictionary((c) => c.Key, (c) => c.ToList());
@@ -79,11 +87,16 @@ namespace CfgComparator
             });
         }
 
+        /// <summary>
+        /// Prints device information to screen.
+        /// </summary>
+        /// <param name="record">Record of the device that is displayed</param>
+        /// <param name="name">Name used in display title</param>
         public static void DisplayInfo(Record record, string name)
         {
             DisplaySeparator();
             Console.WriteLine($"{name} configuration:");
-            Console.WriteLine(record.Filename);
+            Console.WriteLine(record.FileName);
             Console.WriteLine("");
 
             foreach (var item in record.Info) {

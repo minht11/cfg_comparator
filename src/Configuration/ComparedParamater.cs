@@ -1,12 +1,12 @@
 ﻿namespace CfgComparator.Configuration
 {
     /// <summary>
-    /// Result of the comparision between two <see cref="CfgComparator.Configuration.Parameter" />s with identical the id's.
+    /// Comparison result between two <see cref="CfgComparator.Configuration.Parameter" />s with identical the id's.
     /// </summary>
     public class ComparedParameter : Parameter
     {
         /// <summary>
-        /// Holds change status between two identical id <see cref="CfgComparator.Configuration.Parameter" />s.
+        /// Holds change status between two <see cref="CfgComparator.Configuration.Parameter" />s with identical the id's.
         /// </summary>
         public ComparisonStatus Status { get; }
 
