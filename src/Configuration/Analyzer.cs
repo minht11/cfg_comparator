@@ -23,13 +23,13 @@ namespace CfgComparator.Configuration
                 var sourceID = sourceParam.ID;
                 var sourceValue = sourceParam.Value;
 
-                var targetValue = targetParams.Find((t) => t.ID == sourceID);
-                if (targetValue != null)
+                var targetParam = targetParams.Find((t) => t.ID == sourceID);
+                if (targetParam != null)
                 {
-                    targetParams.Remove(targetValue);
+                    targetParams.Remove(targetParam);
                 }
 
-                var (status, changedValue) = targetValue switch
+                var (status, changedValue) = targetParam switch
                 {
                     null => (ComparisonStatus.Removed, null),
                     { Value: var value } when value != sourceValue => (ComparisonStatus.Modified, value),
