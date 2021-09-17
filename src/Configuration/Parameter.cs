@@ -1,7 +1,7 @@
 ﻿namespace CfgComparator.Configuration
 {
     /// <summary>
-    /// Configuration parameter storing it's id and value.
+    /// Individual configuration parameter storing it's id and value.
     /// </summary>
     public class Parameter
     { 

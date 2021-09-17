@@ -2,6 +2,9 @@
 
 namespace CfgComparator.Configuration
 {
+    /// <summary>
+    /// Holds parsed configuration file data.
+    /// </summary>
     public class Record
     {
         
@@ -11,12 +14,14 @@ namespace CfgComparator.Configuration
         public string Filename { get; }
         
         /// <summary>
-        /// Information about the device itself which is not used to configure the device itself.
+        /// Information about the device.
+        /// This data is not used to configure the device itself.
         /// </summary>
         public List<Parameter> Info { get; } = new();
         
         /// <summary>
-        /// Parameters list storing various device configuration options.
+        /// Device configuration options.
+        /// Used to configure various preferences.
         /// </summary>
         public List<Parameter> Parameters { get; } = new();
 

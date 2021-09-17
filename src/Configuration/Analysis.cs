@@ -5,8 +5,7 @@ namespace CfgComparator.Configuration
     public class Analysis
     {
         /// <summary>
-        /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s and gives analysis about them
-        /// in the form of <see cref="CfgComparator.Configuration.ComparedParamater" /> list. 
+        /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s.
         /// </summary>
         /// <param name="source">The source configuration <see cref="CfgComparator.Configuration.Record" /></param>
         /// <param name="source">The target configuration <see cref="CfgComparator.Configuration.Record" /></param>

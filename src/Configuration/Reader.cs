@@ -11,7 +11,7 @@ namespace CfgComparator.Configuration
     public class Reader
     {
         /// <summary>
-        /// Reads GZIPed file contents from disk and returns them as string.
+        /// Reads GZIPed file contents from disk.
         /// </summary>
         /// <param name="path">The file path.</param>
         private static string ReadFileContents(string path)
@@ -23,7 +23,7 @@ namespace CfgComparator.Configuration
         }
 
         /// <summary>
-        /// Reads configuration file contents from disk and returns them as Record of the data.
+        /// Reads and parses configuration file contents from disk.
         /// </summary>
         /// <param name="path">The configuration file path.</param>
         public static Record Read(string path)

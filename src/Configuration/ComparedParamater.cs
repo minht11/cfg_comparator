@@ -1,17 +1,17 @@
 ﻿namespace CfgComparator.Configuration
 {
     /// <summary>
-    /// Class used for storing the results after two configuration id and value pairs are compared.
+    /// Result of the comparision between two <see cref="CfgComparator.Configuration.Parameter" />s with identical the id's.
     /// </summary>
     public class ComparedParameter : Parameter
     {
         /// <summary>
-        /// Change status between two configuration id value pairs.
+        /// Holds change status between two identical id <see cref="CfgComparator.Configuration.Parameter" />s.
         /// </summary>
         public ComparisonStatus Status { get; }
 
         /// <summary>
-        /// Holds changed in case <see cref="CfgComparator.Configuration.ComparedParameter.ChangedValue" />
+        /// Holds changed value in case <see cref="CfgComparator.Configuration.ComparedParameter.Status" />
         /// is equal to <see cref="CfgComparator.Configuration.ComparisonStatus.Modified" />, otherwise it should be null.
         /// </summary>
         public string? ChangedValue { get; }
