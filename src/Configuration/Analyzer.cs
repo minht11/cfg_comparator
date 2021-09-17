@@ -2,7 +2,7 @@
 
 namespace CfgComparator.Configuration
 {
-    public class Analysis
+    public class Analyzer
     {
         // TODO. This comment is not useful.
         /// <summary>
