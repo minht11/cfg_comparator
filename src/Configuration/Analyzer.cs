@@ -4,7 +4,6 @@ namespace CfgComparator.Configuration
 {
     public class Analyzer
     {
-        // TODO. This comment is not useful.
         /// <summary>
         /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s.
         /// </summary>
@@ -21,22 +20,10 @@ namespace CfgComparator.Configuration
             foreach (var sourceParam in sourceParams)
             {
                 var sourceID = sourceParam.ID;
-                var sourceValue = sourceParam.Value;
+                var targetParam = FindAndRemoveFromList(targetParams, sourceID);
+                var (status, changedValue) = CompareParameters(sourceParam, targetParam);
 
-                var targetParam = targetParams.Find((t) => t.ID == sourceID);
-                if (targetParam != null)
-                {
-                    targetParams.Remove(targetParam);
-                }
-
-                var (status, changedValue) = targetParam switch
-                {
-                    null => (ComparisonStatus.Removed, null),
-                    { Value: var value } when value != sourceValue => (ComparisonStatus.Modified, value),
-                    _ => (ComparisonStatus.Unchanged, null),
-                };
-
-                comparedParameters.Add(new(status, sourceID, sourceValue, changedValue));
+                comparedParameters.Add(new(status, sourceID, sourceParam.Value, changedValue));
             }
 
             foreach (var targetParam in targetParams)
@@ -45,6 +32,26 @@ namespace CfgComparator.Configuration
             }
 
             return comparedParameters;
+        }
+
+        private static Parameter? FindAndRemoveFromList(List<Parameter> list, string id)
+        {
+            var foundParam = list.Find((t) => t.ID == id);
+            if (foundParam != null)
+            {
+                list.Remove(foundParam);
+            }
+            return foundParam;
+        }
+        
+        private static (ComparisonStatus, string?) CompareParameters(Parameter source, Parameter? target)
+        {
+            return target switch
+            {
+                null => (ComparisonStatus.Removed, null),
+                { Value: var value } when value != source.Value => (ComparisonStatus.Modified, value),
+                _ => (ComparisonStatus.Unchanged, null),
+            };
         }
     }
 }
