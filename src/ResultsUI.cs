@@ -25,10 +25,8 @@ namespace CfgComparator
         private static bool ShouldShowChangedValue(ComparisonStatus status) =>
             status == ComparisonStatus.Modified;
 
-        private static Dictionary<ComparisonStatus, List<ComparedParameter>> GroupAndFilter(List<ComparedParameter> parameters, string keyStarts)
+        private static Dictionary<ComparisonStatus, List<ComparedParameter>> GroupAndFilter(List<ComparedParameter> parameters, string idStarts)
         {
-            Func<string, bool> showKey = (key) => key == "" || key.ToString().StartsWith(keyStarts);
-
             var dictionary = new Dictionary<ComparisonStatus, List<ComparedParameter>>();            
             foreach (ComparisonStatus status in Enum.GetValues(typeof(ComparisonStatus)))
             {
@@ -37,7 +35,8 @@ namespace CfgComparator
 
             foreach (var item in parameters)
             {
-                if (!string.IsNullOrEmpty(keyStarts) && item.ID.StartsWith(keyStarts)) {
+                if (string.IsNullOrEmpty(idStarts) || item.ID.StartsWith(idStarts))
+                {
                     dictionary[item.Status].Add(item);
                 }
             }
@@ -96,7 +95,8 @@ namespace CfgComparator
             Console.WriteLine(record.FileName);
             Console.WriteLine("");
 
-            foreach (var item in record.Info) {
+            foreach (var item in record.Info)
+            {
                 Console.WriteLine($"{item.ID}: {item.Value}");
             }
         }
