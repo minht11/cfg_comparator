@@ -35,11 +35,26 @@ namespace CfgComparator
             }
             input.RemoveRange(0, 2);
 
-            bool showUnchanged = input.Contains(unchanged);
-            bool showAdded = input.Contains(added);
-            bool showRemoved = input.Contains(removed);
-            bool showModified = input.Contains(modified);
-            string startsValue = input.Find((value) => value.StartsWith(starts))?.Split('=')?[1] ?? "";
+            var startsValue = "";
+            List<Configuration.ComparisonStatus> visibleSections = new();
+            foreach (var value in input)
+            {
+                Configuration.ComparisonStatus? status = value switch {
+                    unchanged => Configuration.ComparisonStatus.Unchanged,
+                    modified => Configuration.ComparisonStatus.Modified,
+                    added => Configuration.ComparisonStatus.Added,
+                    removed => Configuration.ComparisonStatus.Removed,
+                    _ => null,
+                };
+
+                if (status is Configuration.ComparisonStatus s)
+                {
+                    visibleSections.Add(s);
+                } else if (value.StartsWith(starts))
+                {
+                    startsValue = value.Split('=')?[1] ?? "";
+                }
+            }
 
             var source = Configuration.Reader.Read(sourcePath);
             var target = Configuration.Reader.Read(targetPath);
@@ -48,7 +63,7 @@ namespace CfgComparator
             ResultsUI.DisplayInfo(source, "Source");
             ResultsUI.DisplayInfo(target, "Target");
 
-            ResultsUI.DisplayAnalysis(analysis, showUnchanged, showModified, showAdded, showRemoved, startsValue);
+            ResultsUI.DisplayAnalysis(analysis, visibleSections, startsValue);
         }
     }
 }
