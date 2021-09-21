@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.ComponentModel;
+using System.Collections.Generic;
 using System.Linq;
 using System;
 using CfgComparator.Configuration;
@@ -12,32 +13,50 @@ namespace CfgComparator
             Console.WriteLine("---------------------------");
         }
 
-        private class DisplayAnalysisItemOptions {
-            public string Title { get; set; } = "";
-            public ConsoleColor Color { get; set; }
-            public string KeyStarts { get; set; } = "";
-            public bool Visible { get; set; }
-            public bool ShowChangedValue { get; set; } = false;
+        private static ConsoleColor GetStatusColor(ComparisonStatus status) => status switch
+        {
+            ComparisonStatus.Unchanged => ConsoleColor.Gray,
+            ComparisonStatus.Modified => ConsoleColor.Yellow,
+            ComparisonStatus.Added => ConsoleColor.Green,
+            ComparisonStatus.Removed => ConsoleColor.Red,
+            _ => throw new InvalidEnumArgumentException("Wrong argument"),
+        };
+
+        private static bool ShouldShowChangedValue(ComparisonStatus status) =>
+            status == ComparisonStatus.Modified;
+
+        private static Dictionary<ComparisonStatus, List<ComparedParameter>> GroupAndFilter(List<ComparedParameter> parameters, string keyStarts)
+        {
+            Func<string, bool> showKey = (key) => key == "" || key.ToString().StartsWith(keyStarts);
+
+            var dictionary = new Dictionary<ComparisonStatus, List<ComparedParameter>>();            
+            foreach (ComparisonStatus status in Enum.GetValues(typeof(ComparisonStatus)))
+            {
+                dictionary.Add(status, new List<ComparedParameter>());
+            }
+
+            foreach (var item in parameters)
+            {
+                if (!string.IsNullOrEmpty(keyStarts) && item.ID.StartsWith(keyStarts)) {
+                    dictionary[item.Status].Add(item);
+                }
+            }
+
+            return dictionary;
         }
 
-        private static void DisplayAnalysisItem(List<ComparedParameter> data, DisplayAnalysisItemOptions options)
+        private static void DisplayAnalysisItem(List<ComparedParameter> parameters, ComparisonStatus status)
         {
-            var keyStarts = options.KeyStarts;
-            Func<string, bool> showKey = (key) => keyStarts == "" || key.ToString().StartsWith(keyStarts);
-            
-            if (options.Visible) {
-                DisplaySeparator();
-                Console.WriteLine(options.Title);
-                Console.ForegroundColor = options.Color;
-                foreach (var item in data)
-                {
-                    if (showKey(item.ID)) {
-                        var changedValue = options.ShowChangedValue ? $" -> {item.ChangedValue}" : "";
-                        Console.WriteLine($"ID: {item.ID}; Value: {item.Value}{changedValue}");
-                    }
-                }
-                Console.ResetColor();
+            DisplaySeparator();
+            Console.WriteLine(status.ToString());
+
+            Console.ForegroundColor = GetStatusColor(status);
+            foreach (var item in parameters)
+            {
+                var changedValue = ShouldShowChangedValue(status) ? $" -> {item.ChangedValue}" : "";
+                Console.WriteLine($"ID: {item.ID}; Value: {item.Value}{changedValue}");
             }
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -48,43 +67,21 @@ namespace CfgComparator
         /// <param name="showAdded">Show list of added items</param>
         /// <param name="showRemoved">Show list of removed items</param>
         /// <param name="keyStarts">Show ids which start with this value or leave empty to show everything</param>
-        public static void DisplayAnalysis(List<ComparedParameter> changes, bool showUnchanged, bool showModified, bool showAdded, bool showRemoved, string keyStarts = "")
+        public static void DisplayAnalysis(List<ComparedParameter> parameters, List<ComparisonStatus> visible, string keyStarts = "")
         {
-            var changesDict = changes.GroupBy((p) => p.Status).ToDictionary((c) => c.Key, (c) => c.ToList());
-            
-            var unchanged = changesDict[ComparisonStatus.Unchanged];
-            var modified = changesDict[ComparisonStatus.Modified];
-            var removed = changesDict[ComparisonStatus.Removed];
-            var added = changesDict[ComparisonStatus.Added];
+            var groupedParams = GroupAndFilter(parameters, keyStarts);
+
+            var unchangedCount = groupedParams[ComparisonStatus.Unchanged].Count;
+            var modifiedCount = groupedParams[ComparisonStatus.Modified].Count;
+            var addedCount = groupedParams[ComparisonStatus.Added].Count;
+            var removedCount = groupedParams[ComparisonStatus.Removed].Count;
 
             DisplaySeparator();
-            Console.WriteLine($"U: {unchanged.Count} M: {modified.Count} R: {removed.Count} A: {added.Count}");
-
-            DisplayAnalysisItem(unchanged, new DisplayAnalysisItemOptions {
-                Title = "Unchanged",
-                Color = ConsoleColor.Gray,
-                KeyStarts = keyStarts,
-                Visible = showUnchanged,
-            });
-            DisplayAnalysisItem(added, new DisplayAnalysisItemOptions {
-                Title = "Added",
-                Color = ConsoleColor.Green,
-                KeyStarts = keyStarts,
-                Visible = showAdded,
-            });
-            DisplayAnalysisItem(removed, new DisplayAnalysisItemOptions {
-                Title = "Removed",
-                Color = ConsoleColor.Red,
-                KeyStarts = keyStarts,
-                Visible = showRemoved,
-            });
-            DisplayAnalysisItem(modified, new DisplayAnalysisItemOptions {
-                Title = "Modified",
-                Color = ConsoleColor.Yellow,
-                KeyStarts = keyStarts,
-                ShowChangedValue = true,
-                Visible = showModified,
-            });
+            Console.WriteLine($"U: {unchangedCount} M: {modifiedCount} R: {addedCount} A: {removedCount}");
+            foreach (var status in visible)
+            {
+                DisplayAnalysisItem(groupedParams[status], status);
+            }
         }
 
         /// <summary>
