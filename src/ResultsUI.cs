@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Collections.Generic;
-using System.Linq;
 using System;
 using CfgComparator.Configuration;
 
@@ -19,7 +18,7 @@ namespace CfgComparator
             ComparisonStatus.Modified => ConsoleColor.Yellow,
             ComparisonStatus.Added => ConsoleColor.Green,
             ComparisonStatus.Removed => ConsoleColor.Red,
-            _ => throw new InvalidEnumArgumentException("Wrong argument"),
+            _ => throw new ArgumentException("Provide enum value is not valid"),
         };
 
         private static bool ShouldShowChangedValue(ComparisonStatus status) =>

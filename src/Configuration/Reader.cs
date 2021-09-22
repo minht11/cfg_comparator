@@ -23,6 +23,12 @@ namespace CfgComparator.Configuration
         }
 
         /// <summary>
+        /// Checks if file type is supported based on it's extension.
+        /// </summary>
+        /// <param name="path">The configuration file path.</param>s
+        public static bool IsFileSupported(string path) => Path.GetExtension(path) == "cfg";
+
+        /// <summary>
         /// Reads and parses configuration file contents from disk.
         /// </summary>
         /// <param name="path">The configuration file path.</param>s
@@ -34,7 +40,7 @@ namespace CfgComparator.Configuration
                 throw new ReaderPathNotValidException("Provided path is empty or does not exit");
             }
 
-            if (Path.GetExtension(path) == "cfg")
+            if (IsFileSupported(path))
             {
                 throw new ReaderPathNotValidException("Wrong file type. Only '.cfg' files are supported.");
             }
