@@ -27,21 +27,21 @@ namespace CfgComparator
 
         private static Dictionary<ComparisonStatus, List<ComparedParameter>> GroupAndFilter(List<ComparedParameter> parameters, string idStarts)
         {
-            var dictionary = new Dictionary<ComparisonStatus, List<ComparedParameter>>();            
+            var groupedParams = new Dictionary<ComparisonStatus, List<ComparedParameter>>();            
             foreach (ComparisonStatus status in Enum.GetValues(typeof(ComparisonStatus)))
             {
-                dictionary.Add(status, new List<ComparedParameter>());
+                groupedParams.Add(status, new List<ComparedParameter>());
             }
 
             foreach (var item in parameters)
             {
                 if (string.IsNullOrEmpty(idStarts) || item.ID.StartsWith(idStarts))
                 {
-                    dictionary[item.Status].Add(item);
+                    groupedParams[item.Status].Add(item);
                 }
             }
 
-            return dictionary;
+            return groupedParams;
         }
 
         private static void DisplayAnalysisItem(List<ComparedParameter> parameters, ComparisonStatus status)

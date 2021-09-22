@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using System.IO.Compression;
 using System.IO;
+using System;
 
 namespace CfgComparator.Configuration
-
 {
     /// <summary>
     /// Class for reading configuration file data.
@@ -25,9 +25,20 @@ namespace CfgComparator.Configuration
         /// <summary>
         /// Reads and parses configuration file contents from disk.
         /// </summary>
-        /// <param name="path">The configuration file path.</param>
+        /// <param name="path">The configuration file path.</param>s
+        /// <exception cref="CfgComparator.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
         public static Record Read(string path)
         {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                throw new ReaderPathNotValidException("Provided path is empty or does not exit");
+            }
+
+            if (Path.GetExtension(path) == "cfg")
+            {
+                throw new ReaderPathNotValidException("Wrong file type. Only '.cfg' files are supported.");
+            }
+
             string fileContents = ReadFileContents(path);
 
             Record record = new(fileName: Path.GetFileName(path));
@@ -52,6 +63,22 @@ namespace CfgComparator.Configuration
             }
 
             return record;
+        }
+    }
+    public class ReaderPathNotValidException : Exception
+    {
+        public ReaderPathNotValidException()
+        {
+        }
+
+        public ReaderPathNotValidException(string message)
+            : base(message)
+        {
+        }
+
+        public ReaderPathNotValidException(string message, Exception inner)
+            : base(message, inner)
+        {
         }
     }
 }
