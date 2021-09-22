@@ -61,10 +61,8 @@ namespace CfgComparator
         /// <summary>
         /// Shows summary of all changes and depending on the options list of individual changes.
         /// </summary>
-        /// <param name="showUnchanged">Show list of unchanged items</param>
-        /// <param name="showModified">Show list of modified items</param>
-        /// <param name="showAdded">Show list of added items</param>
-        /// <param name="showRemoved">Show list of removed items</param>
+        /// <param name="parameters">Parameters list</param>
+        /// <param name="showModified">List of parameter types to display</param>
         /// <param name="keyStarts">Show ids which start with this value or leave empty to show everything</param>
         public static void DisplayAnalysis(List<ComparedParameter> parameters, List<ComparisonStatus> visible, string keyStarts = "")
         {
