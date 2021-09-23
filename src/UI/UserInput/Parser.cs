@@ -7,12 +7,20 @@ namespace CfgComparator.UI.UserInput
     {
         static private Configuration.ComparisonStatus? ParseStatus(string? value) =>
         value switch {
-            Constants.unchanged => Configuration.ComparisonStatus.Unchanged,
-            Constants.modified => Configuration.ComparisonStatus.Modified,
-            Constants.added => Configuration.ComparisonStatus.Added,
-            Constants.removed => Configuration.ComparisonStatus.Removed,
+            Constants.Unchanged => Configuration.ComparisonStatus.Unchanged,
+            Constants.Modified => Configuration.ComparisonStatus.Modified,
+            Constants.Added => Configuration.ComparisonStatus.Added,
+            Constants.Removed => Configuration.ComparisonStatus.Removed,
             _ => null,
         };
+
+        static private bool TryParsingKeyStarts(string inputValue, out string value)
+        {
+            var isValid = inputValue.StartsWith(Constants.Starts);
+    
+            value = isValid ? (inputValue.Split('=')?[1] ?? "") : "";
+            return isValid;
+        }
 
         static public Result Parse(string inputValue)
         {
@@ -25,19 +33,20 @@ namespace CfgComparator.UI.UserInput
                 TargetPath = targetPath,
             };
 
-            if (input.Count > 2)
+            if (input.Count <= 2)
             {
-                input.RemoveRange(0, 2);
+                return parsedOptions;
             }
+            input.RemoveRange(0, 2);
 
             foreach (var value in input)
             {
                 if (ParseStatus(value) is Configuration.ComparisonStatus status)
                 {
                     parsedOptions.Visible.Add(status);
-                } else if (value.StartsWith(Constants.starts))
+                } else if (TryParsingKeyStarts(value, out var starts))
                 {
-                    parsedOptions.KeyStartsWith = value.Split('=')?[1] ?? "";
+                    parsedOptions.KeyStartsWith = starts;
                 }
             }
 
