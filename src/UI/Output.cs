@@ -4,20 +4,15 @@ using System;
 
 namespace CfgComparator.UI
 {
-    public class Output
+    public class Output : BaseUI
     {
-        static private void DisplaySeparator()
-        {
-            Console.WriteLine("---------------------------");
-        }
-
         private static ConsoleColor GetStatusColor(ComparisonStatus status) => status switch
         {
             ComparisonStatus.Unchanged => ConsoleColor.Gray,
             ComparisonStatus.Modified => ConsoleColor.Yellow,
             ComparisonStatus.Added => ConsoleColor.Green,
             ComparisonStatus.Removed => ConsoleColor.Red,
-            _ => throw new ArgumentException("Provide enum value is not valid"),
+            _ => throw new ArgumentException("Provided enum value is not valid"),
         };
 
         private static bool ShouldShowChangedValue(ComparisonStatus status) =>
@@ -89,7 +84,7 @@ namespace CfgComparator.UI
             DisplaySeparator();
             Console.WriteLine($"{name} configuration:");
             Console.WriteLine(record.FileName);
-            Console.WriteLine("");
+            DisplaySpace();
 
             foreach (var item in record.Info)
             {

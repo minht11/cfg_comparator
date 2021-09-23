@@ -2,7 +2,7 @@ using System;
 
 namespace CfgComparator.UI
 {
-    public class Input
+    public class Input : BaseUI
     {
         static private void DisplayInputInstructions()
         {
@@ -13,6 +13,7 @@ namespace CfgComparator.UI
             Console.WriteLine($"{UserInput.Constants.Removed} : show removed");
             Console.WriteLine($"{UserInput.Constants.Modified} : show modified");
             Console.WriteLine($"{UserInput.Constants.Starts}* : keys should start with *");
+            DisplaySeparator();
         }
 
         static public UserInput.Result GetParsedUserInput()
