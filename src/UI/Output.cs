@@ -1,11 +1,10 @@
-﻿using System.ComponentModel;
 using System.Collections.Generic;
-using System;
 using CfgComparator.Configuration;
+using System;
 
-namespace CfgComparator
+namespace CfgComparator.UI
 {
-    public class ResultsUI
+    public class Output
     {
         static private void DisplaySeparator()
         {

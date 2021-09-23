@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CfgComparator.UI.UserInput
+namespace CfgComparator.UserInput
 {
     public class Result
     {

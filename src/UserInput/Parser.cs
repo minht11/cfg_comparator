@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CfgComparator.UI.UserInput
+namespace CfgComparator.UserInput
 {
     public class Parser
     {
