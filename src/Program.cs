@@ -6,8 +6,11 @@ namespace CfgComparator
     {
         static void Main(string[] args)
         {
-            var options = UI.Input.GetParsedUserInput();
+            UI.Input.ListenForUserInput(OnUserInputHandler);
+        }
 
+        static private void OnUserInputHandler(UserInput.Result options)
+        {
             if (ValidateFilePath(options.SourcePath) && ValidateFilePath(options.TargetPath))
             {
                 var source = Configuration.Reader.Read(options.SourcePath);

@@ -7,5 +7,6 @@ namespace CfgComparator.UserInput
         public const string Removed = "-r";
         public const string Modified = "-m";
         public const string Starts = "--starts=";
+        public const string Exit = "exit";
     }
 }
