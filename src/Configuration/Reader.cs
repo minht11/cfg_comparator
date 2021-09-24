@@ -37,7 +37,7 @@ namespace CfgComparator.Configuration
         {
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
             {
-                throw new ReaderPathNotValidException("Provided path is empty or does not exit");
+                throw new ReaderPathNotValidException($"Provided path '{path}' is empty or does not exit");
             }
 
             if (IsFileSupported(path))
