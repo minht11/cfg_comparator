@@ -39,13 +39,27 @@ namespace CfgComparator.UI
 
         private static void DisplayAnalysisItem(List<ComparedParameter> parameters, ComparisonStatus status)
         {
+            var unchanged = new Analysis.Unchanged();
+            var modified = new Analysis.Modified();
+            var removed = new Analysis.Removed();
+            var added = new Analysis.Added();
+            unchanged.SetSuccessor(modified);
+            modified.SetSuccessor(removed);
+            removed.SetSuccessor(added);
+
+            var options = unchanged.GetOptions(status);
+
+            if (options == null) {
+                throw new ArgumentException("Status value could not be resolved");
+            }
+
             DisplaySeparator();
             Console.WriteLine(status.ToString());
 
-            Console.ForegroundColor = GetStatusColor(status);
+            Console.ForegroundColor = options.Color;
             foreach (var item in parameters)
             {
-                var changedValue = ShouldShowChangedValue(status) ? $" -> {item.ChangedValue}" : "";
+                var changedValue = options.ShowChangedValue ? $" -> {item.ChangedValue}" : "";
                 Console.WriteLine($"ID: {item.ID}; Value: {item.Value}{changedValue}");
             }
             Console.ResetColor();
