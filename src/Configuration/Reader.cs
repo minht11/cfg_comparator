@@ -26,7 +26,7 @@ namespace CfgComparator.Configuration
         /// Checks if file type is supported based on it's extension.
         /// </summary>
         /// <param name="path">The configuration file path.</param>s
-        public static bool IsFileSupported(string path) => Path.GetExtension(path) == "cfg";
+        private static bool IsFileSupported(string path) => Path.GetExtension(path) == "cfg";
 
         /// <summary>
         /// Reads and parses configuration file contents from disk.

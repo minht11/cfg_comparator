@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 namespace CfgComparator
 {
     class Program
@@ -9,9 +8,9 @@ namespace CfgComparator
             UI.Input.ListenForUserInput(OnUserInputHandler);
         }
 
-        static private void OnUserInputHandler(UserInput.Result options)
+        private static void OnUserInputHandler(UserInput.Result options)
         {
-            if (ValidateFilePath(options.SourcePath) && ValidateFilePath(options.TargetPath))
+            try
             {
                 var source = Configuration.Reader.Read(options.SourcePath);
                 var target = Configuration.Reader.Read(options.TargetPath);
@@ -22,15 +21,24 @@ namespace CfgComparator
 
                 UI.Output.DisplayAnalysis(analysis, options.Visible, options.KeyStartsWith);
             }
-            else
+            catch (Exception err)
             {
-                Console.WriteLine("Source or/and target paths are empty or do not exits");
+                HandleUserInputException(err);
             }
         }
 
-        static private bool ValidateFilePath(string? path)
+        private static void HandleUserInputException(Exception err)
         {
-            return !string.IsNullOrEmpty(path) && File.Exists(path);
+            Console.ForegroundColor = ConsoleColor.Red;
+            if (err is Configuration.ReaderPathNotValidException)
+            {
+                Console.WriteLine(err.Message);
+            }
+            else
+            {
+                Console.WriteLine("Unknown error occured while trying to process your files");
+            }
+            Console.ResetColor();
         }
     }
 }
