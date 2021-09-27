@@ -37,22 +37,8 @@ namespace CfgComparator.UI
             return groupedParams;
         }
 
-        private static void DisplayAnalysisItem(List<ComparedParameter> parameters, ComparisonStatus status)
+        private static void DisplayAnalysisItem(List<ComparedParameter> parameters, ComparisonStatus status, Analysis.AnalysisOutputOptions options)
         {
-            var unchanged = new Analysis.Unchanged();
-            var modified = new Analysis.Modified();
-            var removed = new Analysis.Removed();
-            var added = new Analysis.Added();
-            unchanged.SetSuccessor(modified);
-            modified.SetSuccessor(removed);
-            removed.SetSuccessor(added);
-
-            var options = unchanged.GetOptions(status);
-
-            if (options == null) {
-                throw new ArgumentException("Status value could not be resolved");
-            }
-
             DisplaySeparator();
             Console.WriteLine(status.ToString());
 
@@ -63,6 +49,16 @@ namespace CfgComparator.UI
                 Console.WriteLine($"ID: {item.ID}; Value: {item.Value}{changedValue}");
             }
             Console.ResetColor();
+        }
+
+        static private void DisplaySummary(Dictionary<ComparisonStatus, List<ComparedParameter>> groupedParams)
+        {
+            var unchangedCount = groupedParams[ComparisonStatus.Unchanged].Count;
+            var modifiedCount = groupedParams[ComparisonStatus.Modified].Count;
+            var addedCount = groupedParams[ComparisonStatus.Added].Count;
+            var removedCount = groupedParams[ComparisonStatus.Removed].Count;
+
+            Console.WriteLine($"U: {unchangedCount} M: {modifiedCount} R: {addedCount} A: {removedCount}");
         }
 
         /// <summary>
@@ -76,16 +72,25 @@ namespace CfgComparator.UI
         {
             var groupedParams = GroupAndFilter(parameters, keyStarts);
 
-            var unchangedCount = groupedParams[ComparisonStatus.Unchanged].Count;
-            var modifiedCount = groupedParams[ComparisonStatus.Modified].Count;
-            var addedCount = groupedParams[ComparisonStatus.Added].Count;
-            var removedCount = groupedParams[ComparisonStatus.Removed].Count;
+            var unchanged = new Analysis.Unchanged();
+            var modified = new Analysis.Modified();
+            var removed = new Analysis.Removed();
+            var added = new Analysis.Added();
+            unchanged.SetSuccessor(modified);
+            modified.SetSuccessor(removed);
+            removed.SetSuccessor(added);
 
             DisplaySeparator();
-            Console.WriteLine($"U: {unchangedCount} M: {modifiedCount} R: {addedCount} A: {removedCount}");
+            DisplaySummary(groupedParams);
             foreach (var status in visible)
             {
-                DisplayAnalysisItem(groupedParams[status], status);
+                var options = unchanged.GetOptions(status);
+
+                if (options == null) {
+                    throw new ArgumentException($"Status value '{status}' could not be resolved");
+                }
+
+                DisplayAnalysisItem(groupedParams[status], status, options);
             }
         }
 
