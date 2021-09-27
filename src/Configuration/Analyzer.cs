@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CfgComparator.Configuration
 {
@@ -9,8 +10,14 @@ namespace CfgComparator.Configuration
         /// </summary>
         /// <param name="source">The source configuration <see cref="CfgComparator.Configuration.Record" /></param>
         /// <param name="source">The target configuration <see cref="CfgComparator.Configuration.Record" /></param>
+        /// <exception cref="System.ArgumentNullException">Source and/or target params cannot be null</exception>
         public static List<ComparedParameter> Compare(Record source, Record target)
         {
+            if (source == null || target == null)
+            {
+                throw new ArgumentNullException("Source and/or target params cannot be null");
+            }
+
             var sourceParams = source.Parameters;
             // Do not modify original list.
             var targetParams = new List<Parameter>(target.Parameters);
