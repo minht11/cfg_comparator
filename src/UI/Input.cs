@@ -19,7 +19,12 @@ namespace CfgComparator.UI
             DisplaySeparator();
         }
 
-        static public void ListenForUserInput(Action<UserInput.Result> onInput) {
+        /// <summary>
+        /// Listens for user input and parses it. Exit is handled automatically.
+        /// </summary>
+        /// <param name="onInput">Function which is called when input is sucessfully parsed</param>
+        static public void ListenForUserInput(Action<UserInput.Result> onInput)
+        {
             while (true)
             {
                 DisplayInputInstructions();

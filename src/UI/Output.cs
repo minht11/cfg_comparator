@@ -6,17 +6,17 @@ namespace CfgComparator.UI
 {
     public class Output : BaseUI
     {
-        private static ConsoleColor GetStatusColor(ComparisonStatus status) => status switch
-        {
-            ComparisonStatus.Unchanged => ConsoleColor.Gray,
-            ComparisonStatus.Modified => ConsoleColor.Yellow,
-            ComparisonStatus.Added => ConsoleColor.Green,
-            ComparisonStatus.Removed => ConsoleColor.Red,
-            _ => throw new ArgumentException("Provided enum value is not valid"),
-        };
+        // private static ConsoleColor GetStatusColor(ComparisonStatus status) => status switch
+        // {
+        //     ComparisonStatus.Unchanged => ConsoleColor.Gray,
+        //     ComparisonStatus.Modified => ConsoleColor.Yellow,
+        //     ComparisonStatus.Added => ConsoleColor.Green,
+        //     ComparisonStatus.Removed => ConsoleColor.Red,
+        //     _ => throw new ArgumentException("Provided enum value is not valid"),
+        // };
 
-        private static bool ShouldShowChangedValue(ComparisonStatus status) =>
-            status == ComparisonStatus.Modified;
+        // private static bool ShouldShowChangedValue(ComparisonStatus status) =>
+        //     status == ComparisonStatus.Modified;
 
         private static Dictionary<ComparisonStatus, List<ComparedParameter>> GroupAndFilter(List<ComparedParameter> parameters, string idStarts)
         {
@@ -71,6 +71,7 @@ namespace CfgComparator.UI
         /// <param name="parameters">Parameters list</param>
         /// <param name="showModified">List of parameter types to display</param>
         /// <param name="keyStarts">Show ids which start with this value or leave empty to show everything</param>
+        /// <exception cref="System.ArgumentException">Thrown when provided visible enmum is not valid</exception>
         public static void DisplayAnalysis(List<ComparedParameter> parameters, List<ComparisonStatus> visible, string keyStarts = "")
         {
             var groupedParams = GroupAndFilter(parameters, keyStarts);
