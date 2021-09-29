@@ -1,4 +1,4 @@
-namespace CfgComparator.UI.Analysis
+namespace CfgComparator.ConfigurationUILib.Analysis
 {
     public abstract class Analyzer
     {

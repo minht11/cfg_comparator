@@ -1,7 +1,7 @@
 using System;
 using CfgComparator.Configuration;
 
-namespace CfgComparator.UI.Analysis
+namespace CfgComparator.ConfigurationUILib.Analysis
 {
     public class Unchanged : Analyzer
     {

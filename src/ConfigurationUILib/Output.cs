@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using CfgComparator.Configuration;
 using System;
 
-namespace CfgComparator.UI
+namespace CfgComparator.ConfigurationUILib
 {
-    public class Output : BaseUI
+    public class Output : ConsoleUILib.BaseUI
     {
         // private static ConsoleColor GetStatusColor(ComparisonStatus status) => status switch
         // {
@@ -68,9 +68,9 @@ namespace CfgComparator.UI
         /// <param name="showModified">List of parameter types to display</param>
         /// <param name="keyStarts">Show ids which start with this value or leave empty to show everything</param>
         /// <exception cref="System.ArgumentException">Thrown when provided visible enmum is not valid</exception>
-        public static void DisplayAnalysis(List<ComparedParameter> parameters, List<ComparisonStatus> visible, string keyStarts = "")
+        public static void DisplayAnalysis(List<ComparedParameter> parameters, IAnalysisOptions options)
         {
-            var groupedParams = GroupAndFilter(parameters, keyStarts);
+            var groupedParams = GroupAndFilter(parameters, options.KeyStartsWith);
 
             var unchanged = new Analysis.Unchanged();
             var modified = new Analysis.Modified();
@@ -82,15 +82,15 @@ namespace CfgComparator.UI
 
             DisplaySeparator();
             DisplaySummary(groupedParams);
-            foreach (var status in visible)
+            foreach (var status in options.Visible)
             {
-                var options = unchanged.GetOptions(status);
+                var sectionOptions = unchanged.GetOptions(status);
 
-                if (options == null) {
+                if (sectionOptions == null) {
                     throw new ArgumentException($"Status value '{status}' could not be resolved");
                 }
 
-                DisplayAnalysisItem(groupedParams[status], status, options);
+                DisplayAnalysisItem(groupedParams[status], status, sectionOptions);
             }
         }
 

@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace CfgComparator.UserInput
+namespace CfgComparator.ConfigurationUILib.UserInput
 {
-    public class Result
+    public class Result : IAnalysisOptions
     {
         public string SourcePath { get; set; } = "";
         public string TargetPath { get; set; } = "";

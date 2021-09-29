@@ -1,6 +1,6 @@
 using System;
 
-namespace CfgComparator.UI
+namespace CfgComparator.ConsoleUILib
 {
     public abstract class BaseUI
     {

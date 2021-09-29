@@ -1,5 +1,5 @@
 using System;
-namespace CfgComparator.UI.Analysis
+namespace CfgComparator.ConfigurationUILib.Analysis
 {
     public class AnalysisOutputOptions
     {
