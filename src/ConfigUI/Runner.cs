@@ -28,7 +28,7 @@ namespace CfgComparator.ConfigUI
             return groupedParams;
         }
 
-        public static void Start(IOptions options, IDisplayImpl impl)
+        public static void Display(IOptions options, IDisplayImpl impl)
         {
             var source = Configuration.Reader.Read(options.SourcePath);
             var target = Configuration.Reader.Read(options.TargetPath);
