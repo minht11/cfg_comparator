@@ -1,12 +1,12 @@
-﻿using CfgComparator.ConsoleUILib;
-
-namespace CfgComparator
+﻿namespace CfgComparator
 {
     class Program
     {
         static void Main(string[] args)
         {
-            ConsoleUI.Start(new ConfigurationUILib.ConfigurationUI());
+            ConsoleConfigUI.Input.ListenForUserInput((parsedInput) => {
+                ConfigUI.Runner.Start(parsedInput, new ConsoleConfigUI.Output());
+            });
         }
     }
 }

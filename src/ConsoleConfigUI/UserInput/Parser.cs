@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CfgComparator.ConfigurationUILib.UserInput
+namespace CfgComparator.ConsoleConfigUI.UserInput
 {
     public class Parser
     {
@@ -43,10 +43,10 @@ namespace CfgComparator.ConfigurationUILib.UserInput
             {
                 if (ParseStatus(value) is Configuration.ComparisonStatus status)
                 {
-                    parsedOptions.Visible.Add(status);
+                    parsedOptions.Visibility.Add(status);
                 } else if (TryParsingKeyStarts(value, out var starts))
                 {
-                    parsedOptions.KeyStartsWith = starts;
+                    parsedOptions.IdStartsWith = starts;
                 }
             }
 

@@ -1,4 +1,4 @@
-namespace CfgComparator.ConfigurationUILib.UserInput
+namespace CfgComparator.ConsoleConfigUI.UserInput
 {
     public class Constants
     {
