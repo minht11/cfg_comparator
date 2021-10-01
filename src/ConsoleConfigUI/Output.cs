@@ -8,7 +8,7 @@ namespace CfgComparator.ConsoleConfigUI
 
     public class Output : BaseUI, ConfigUI.IDisplayImpl
     {
-        private void DisplayRecordInfo(Record record, string name)
+        private static void DisplayRecordInfo(Record record, string name)
         {
             DisplaySeparator();
             Console.WriteLine($"{name} configuration:");
@@ -71,6 +71,13 @@ namespace CfgComparator.ConsoleConfigUI
             {
                 DisplayComparisonSection(groupedParams[status], status);
             }
+        }
+
+        public void DisplayError(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(message);
+            Console.ResetColor();
         }
     }
 }

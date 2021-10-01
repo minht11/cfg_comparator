@@ -30,14 +30,22 @@ namespace CfgComparator.ConfigUI
 
         public static void Display(IOptions options, IDisplayImpl impl)
         {
-            var source = Configuration.Reader.Read(options.SourcePath);
-            var target = Configuration.Reader.Read(options.TargetPath);
-            var comparedParams = Configuration.Analyzer.Compare(source, target);
+            try {
+                var source = Configuration.Reader.Read(options.SourcePath);
+                var target = Configuration.Reader.Read(options.TargetPath);
+                var comparedParams = Configuration.Analyzer.Compare(source, target);
 
-            var groupedParams = GroupAndFilter(comparedParams, options.IdStartsWith);
+                var groupedParams = GroupAndFilter(comparedParams, options.IdStartsWith);
 
-            impl.DisplayRecordsInfo(source, target);
-            impl.DisplayComparisons(groupedParams, options.Visibility);
+                impl.DisplayRecordsInfo(source, target);
+                impl.DisplayComparisons(groupedParams, options.Visibility);
+            } catch (Exception err) {
+                string message = err is Configuration.ReaderPathNotValidException
+                    ? err.Message
+                    : "Unknown error occured while trying to process your files";
+
+                impl.DisplayError(message);
+            }
         }
     }
 }
