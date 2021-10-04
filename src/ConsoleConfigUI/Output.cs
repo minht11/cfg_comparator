@@ -8,6 +8,22 @@ namespace CfgComparator.ConsoleConfigUI
 
     public class Output : BaseUI, ConfigUI.IDisplayImpl
     {
+        private static GroupedParameters GroupByStatus(List<ComparedParameter> parameters)
+        {
+            var groupedParams = new GroupedParameters();            
+            foreach (ComparisonStatus status in Enum.GetValues(typeof(ComparisonStatus)))
+            {
+                groupedParams.Add(status, new List<ComparedParameter>());
+            }
+
+            foreach (var item in parameters)
+            {
+                groupedParams[item.Status].Add(item);
+            }
+
+            return groupedParams;
+        }
+
         private static void DisplayRecordInfo(Record record, string name)
         {
             DisplaySeparator();
@@ -57,14 +73,16 @@ namespace CfgComparator.ConsoleConfigUI
             Console.ForegroundColor = GetStatusColor(status);
             foreach (var item in parameters)
             {
-                   var changedValue = ShouldShowChangedValue(status) ? $" -> {item.ChangedValue}" : "";
+                var changedValue = ShouldShowChangedValue(status) ? $" -> {item.ChangedValue}" : "";
                 Console.WriteLine($"ID: {item.ID}; Value: {item.Value}{changedValue}");
             }
             Console.ResetColor();
         }
 
-        public void DisplayComparisons(GroupedParameters groupedParams, List<ComparisonStatus> visibility)
+        public void DisplayComparisons(List<ComparedParameter> parameters, List<ComparisonStatus> visibility)
         {
+            var groupedParams = GroupByStatus(parameters);
+
             DisplaySeparator();
             DisplaySummary(groupedParams);
             foreach (var status in visibility)

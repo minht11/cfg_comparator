@@ -7,7 +7,7 @@ namespace CfgComparator.ConfigUI
     {
         void DisplayRecordsInfo(Record source, Record target);
 
-        void DisplayComparisons(Dictionary<ComparisonStatus, List<ComparedParameter>> groupedParams, List<ComparisonStatus> visible);
+        void DisplayComparisons(List<ComparedParameter> parameters, List<ComparisonStatus> visible);
 
         void DisplayError(string message);
     }
