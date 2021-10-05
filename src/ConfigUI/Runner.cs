@@ -5,7 +5,7 @@ using CfgComparator.Configuration;
 
 namespace CfgComparator.ConfigUI
 {
-    class Runner
+    public class Runner
     {
         private static List<ComparedParameter> FilterById(List<ComparedParameter> parameters, string idStarts)
         {

@@ -3,7 +3,7 @@ using CfgComparator.Configuration;
 
 namespace CfgComparator.ConfigUI
 {
-    interface IDisplayImpl
+    public interface IDisplayImpl
     {
         void DisplayRecordsInfo(Record source, Record target);
 

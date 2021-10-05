@@ -3,7 +3,7 @@ using CfgComparator.Configuration;
 
 namespace CfgComparator.ConfigUI
 {
-    interface IOptions
+    public interface IOptions
     {
         string SourcePath { get; set; }
 
