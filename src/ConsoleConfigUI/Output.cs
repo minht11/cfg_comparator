@@ -24,35 +24,6 @@ namespace CfgComparator.ConsoleConfigUI
             return groupedParams;
         }
 
-        private static void DisplayRecordInfo(Record record, string name)
-        {
-            DisplaySeparator();
-            Console.WriteLine($"{name} configuration:");
-            Console.WriteLine(record.FileName);
-            DisplaySpace();
-
-            foreach (var item in record.Info)
-            {
-                Console.WriteLine($"{item.ID}: {item.Value}");
-            }
-        }
-
-        public void DisplayRecordsInfo(Record source, Record target)
-        {
-            DisplayRecordInfo(source, "Source");
-            DisplayRecordInfo(target, "Target");
-        }
-
-        static private void DisplaySummary(GroupedParameters groupedParams)
-        {
-            var unchangedCount = groupedParams[ComparisonStatus.Unchanged].Count;
-            var modifiedCount = groupedParams[ComparisonStatus.Modified].Count;
-            var addedCount = groupedParams[ComparisonStatus.Added].Count;
-            var removedCount = groupedParams[ComparisonStatus.Removed].Count;
-
-            Console.WriteLine($"U: {unchangedCount} M: {modifiedCount} R: {addedCount} A: {removedCount}");
-        }
-
         private static ConsoleColor GetStatusColor(ComparisonStatus status) => status switch
         {
             ComparisonStatus.Unchanged => ConsoleColor.Gray,
@@ -64,6 +35,16 @@ namespace CfgComparator.ConsoleConfigUI
 
         private static bool ShouldShowChangedValue(ComparisonStatus status) =>
             status == ComparisonStatus.Modified;
+
+        static private void DisplaySummary(GroupedParameters groupedParams)
+        {
+            var unchangedCount = groupedParams[ComparisonStatus.Unchanged].Count;
+            var modifiedCount = groupedParams[ComparisonStatus.Modified].Count;
+            var addedCount = groupedParams[ComparisonStatus.Added].Count;
+            var removedCount = groupedParams[ComparisonStatus.Removed].Count;
+
+            Console.WriteLine($"U: {unchangedCount} M: {modifiedCount} R: {addedCount} A: {removedCount}");
+        }
 
         private static void DisplayComparisonSection(List<ComparedParameter> parameters, ComparisonStatus status)
         {
@@ -89,6 +70,25 @@ namespace CfgComparator.ConsoleConfigUI
             {
                 DisplayComparisonSection(groupedParams[status], status);
             }
+        }
+
+        private static void DisplayRecordInfo(Record record, string name)
+        {
+            DisplaySeparator();
+            Console.WriteLine($"{name} configuration:");
+            Console.WriteLine(record.FileName);
+            DisplaySpace();
+
+            foreach (var item in record.Info)
+            {
+                Console.WriteLine($"{item.ID}: {item.Value}");
+            }
+        }
+
+        public void DisplayRecordsInfo(Record source, Record target)
+        {
+            DisplayRecordInfo(source, "Source");
+            DisplayRecordInfo(target, "Target");
         }
 
         public void DisplayError(string message)
