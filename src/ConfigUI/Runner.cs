@@ -13,6 +13,13 @@ namespace CfgComparator.ConfigUI
             return parameters.Where((param) => shouldNotFilter || param.ID.StartsWith(idStarts)).ToList();
         }
 
+        private static string GetErrorMessage(Exception err)
+        {
+            return err is Configuration.ReaderPathNotValidException
+                ? err.Message
+                : "Unknown error occured while trying to process your files";
+        }
+
         public static void Display(IOptions options, IDisplayImpl impl)
         {
             try {
@@ -20,16 +27,12 @@ namespace CfgComparator.ConfigUI
                 var target = Configuration.Reader.Read(options.TargetPath);
                 var comparedParams = Configuration.Analyzer.Compare(source, target);
 
-                var groupedParams = FilterById(comparedParams, options.IdStartsWith);
+                var filteredParams = FilterById(comparedParams, options.IdStartsWith);
 
                 impl.DisplayRecordsInfo(source, target);
-                impl.DisplayComparisons(groupedParams, options.Visibility);
+                impl.DisplayComparisons(filteredParams, options.Visibility);
             } catch (Exception err) {
-                string message = err is Configuration.ReaderPathNotValidException
-                    ? err.Message
-                    : "Unknown error occured while trying to process your files";
-
-                impl.DisplayError(message);
+                impl.DisplayError(GetErrorMessage(err));
             }
         }
     }
