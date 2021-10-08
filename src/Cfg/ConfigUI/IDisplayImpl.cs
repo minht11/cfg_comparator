@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using CfgComparator.Configuration;
+using Cfg.Configuration;
 
-namespace CfgComparator.ConfigUI
+namespace Cfg.ConfigUI
 {
     public interface IDisplayImpl
     {

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace CfgComparator.ConsoleConfigUI.UserInput
+namespace Cfg.ConsoleConfigUI.UserInput
 {
     public class Result : ConfigUI.IOptions
     {

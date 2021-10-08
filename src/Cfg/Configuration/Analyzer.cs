@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace CfgComparator.Configuration
+namespace Cfg.Configuration
 {
     public class Analyzer
     {
         /// <summary>
-        /// Compares two configuration <see cref="CfgComparator.Configuration.Record" />s.
+        /// Compares two configuration <see cref="Cfg.Configuration.Record" />s.
         /// </summary>
-        /// <param name="source">The source configuration <see cref="CfgComparator.Configuration.Record" /></param>
-        /// <param name="source">The target configuration <see cref="CfgComparator.Configuration.Record" /></param>
+        /// <param name="source">The source configuration <see cref="Cfg.Configuration.Record" /></param>
+        /// <param name="source">The target configuration <see cref="Cfg.Configuration.Record" /></param>
         /// <exception cref="System.ArgumentNullException">Source and/or target params cannot be null</exception>
         public static List<ComparedParameter> Compare(Record source, Record target)
         {

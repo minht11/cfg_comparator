@@ -1,4 +1,4 @@
-﻿namespace CfgComparator.Configuration
+﻿namespace Cfg.Configuration
 {
     /// <summary>
     /// Defines possible comparison result states.

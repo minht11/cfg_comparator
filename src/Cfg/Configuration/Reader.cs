@@ -3,7 +3,7 @@ using System.IO.Compression;
 using System.IO;
 using System;
 
-namespace CfgComparator.Configuration
+namespace Cfg.Configuration
 {
     /// <summary>
     /// Class for reading configuration file data.
@@ -32,7 +32,7 @@ namespace CfgComparator.Configuration
         /// Reads and parses configuration file contents from disk.
         /// </summary>
         /// <param name="path">The configuration file path.</param>s
-        /// <exception cref="CfgComparator.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
+        /// <exception cref="Cfg.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
         public static Record Read(string path)
         {
             if (string.IsNullOrEmpty(path) || !File.Exists(path))

@@ -1,6 +1,6 @@
 using System;
 
-namespace CfgComparator.ConsoleConfigUI
+namespace Cfg.ConsoleConfigUI
 {
     public class Input : BaseUI
     {

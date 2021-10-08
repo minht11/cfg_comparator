@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CfgComparator.Configuration
+namespace Cfg.Configuration
 {
     /// <summary>
     /// Holds parsed configuration file data.

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CfgComparator.Configuration;
+using Cfg.Configuration;
 
-namespace CfgComparator.ConfigUI
+namespace Cfg.ConfigUI
 {
     public class Runner
     {

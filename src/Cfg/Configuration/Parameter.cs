@@ -1,4 +1,4 @@
-﻿namespace CfgComparator.Configuration
+﻿namespace Cfg.Configuration
 {
     /// <summary>
     /// Individual configuration parameter storing it's id and value.
