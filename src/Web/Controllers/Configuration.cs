@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using System;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -18,11 +18,12 @@ namespace Web.Controllers
             _logger = logger;
         }
 
-        [HttpPost]
-        [Route("compare")]
-        public string Post()
+        [HttpPost("compare")]
+        public async Task<IActionResult> Compare(IFormFile sourceFile, IFormFile targetFile, [FromQuery] CompareQuery query)
         {
-            return "Compare";
+            // Console.WriteLine(query);
+            await Task.Delay(100);
+            return Ok("Umm");
         }
     }
 }

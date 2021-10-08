@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net;
+using System.Text;
 using System.IO.Compression;
 using System.IO;
 using System;
@@ -11,13 +12,12 @@ namespace Cfg.Configuration
     public class Reader
     {
         /// <summary>
-        /// Reads GZIPed file contents from disk as string.
+        /// Decompresses GZIPed stream contents as string.
         /// </summary>
         /// <param name="path">The file path.</param>
-        private static string ReadFileContents(string path)
+        private static string DecompressContents(Stream stream)
         {
-            using (var fileToDecompress = File.Open(path, FileMode.Open))
-            using (var gz = new GZipStream(fileToDecompress, CompressionMode.Decompress))
+            using (var gz = new GZipStream(stream, CompressionMode.Decompress))
             using (var sr = new StreamReader(gz, Encoding.UTF8))
             return sr.ReadToEnd();
         }
@@ -29,27 +29,18 @@ namespace Cfg.Configuration
         private static bool IsFileSupported(string path) => Path.GetExtension(path) == "cfg";
 
         /// <summary>
-        /// Reads and parses configuration file contents from disk.
+        /// Reads and parses configuration file contents from stream.
         /// </summary>
-        /// <param name="path">The configuration file path.</param>s
+        /// <param name="stream">The configuration file stream.</param>
+        /// <param name="fileName">The configuration file name.</param>s
         /// <exception cref="Cfg.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
-        public static Record Read(string path)
+        public static Record Read(Stream stream, string fileName)
         {
-            if (string.IsNullOrEmpty(path) || !File.Exists(path))
-            {
-                throw new ReaderPathNotValidException($"Provided path '{path}' is empty or does not exit");
-            }
+            var contents = DecompressContents(stream);
 
-            if (IsFileSupported(path))
-            {
-                throw new ReaderPathNotValidException("Wrong file type. Only '.cfg' files are supported.");
-            }
+            Record record = new(fileName);
 
-            string fileContents = ReadFileContents(path);
-
-            Record record = new(fileName: Path.GetFileName(path));
-
-            foreach (var idValueLine in fileContents.Split(';'))
+            foreach (var idValueLine in contents.Split(';'))
             {
                 var idValuePair = idValueLine.Split(':');
                 if (idValuePair.Length < 2) continue;
@@ -69,6 +60,27 @@ namespace Cfg.Configuration
             }
 
             return record;
+        }
+
+        /// <summary>
+        /// Reads and parses configuration file contents from disk.
+        /// </summary>
+        /// <param name="path">The configuration file path.</param>s
+        /// <exception cref="Cfg.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
+        public static Record Read(string path)
+        {
+            if (string.IsNullOrEmpty(path) || !File.Exists(path))
+            {
+                throw new ReaderPathNotValidException($"Provided path '{path}' is empty or does not exit");
+            }
+
+            if (IsFileSupported(path))
+            {
+                throw new ReaderPathNotValidException("Wrong file type. Only '.cfg' files are supported.");
+            }
+
+            using (var fileStream = File.Open(path, FileMode.Open))
+            return Read(fileStream, Path.GetFileName(path));
         }
     }
     public class ReaderPathNotValidException : Exception
