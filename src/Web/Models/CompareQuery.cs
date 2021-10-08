@@ -3,7 +3,7 @@ namespace Web.Models
 {
     public class CompareQuery
     {
-        public string? IdStartsWith { get; set; }
+        public string? IdStartsWith { get; set; } = "";
             
         public bool? Unchanged { get; set; }
 
