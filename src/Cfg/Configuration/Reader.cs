@@ -26,7 +26,7 @@ namespace Cfg.Configuration
         /// Checks if file type is supported based on it's extension.
         /// </summary>
         /// <param name="path">The configuration file path.</param>s
-        private static bool IsFileSupported(string path) => Path.GetExtension(path) == "cfg";
+        public static bool IsFileSupported(string path) => Path.GetExtension(path) == "cfg";
 
         /// <summary>
         /// Reads and parses configuration file contents from stream.
@@ -36,6 +36,11 @@ namespace Cfg.Configuration
         /// <exception cref="Cfg.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
         public static Record Read(Stream stream, string fileName)
         {
+            if (IsFileSupported(fileName))
+            {
+                throw new ReaderPathNotValidException("Wrong file type. Only '.cfg' files are supported.");
+            }
+
             var contents = DecompressContents(stream);
 
             Record record = new(fileName);
@@ -72,11 +77,6 @@ namespace Cfg.Configuration
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
             {
                 throw new ReaderPathNotValidException($"Provided path '{path}' is empty or does not exit");
-            }
-
-            if (IsFileSupported(path))
-            {
-                throw new ReaderPathNotValidException("Wrong file type. Only '.cfg' files are supported.");
             }
 
             using (var fileStream = File.Open(path, FileMode.Open))

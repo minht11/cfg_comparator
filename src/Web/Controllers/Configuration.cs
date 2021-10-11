@@ -1,3 +1,5 @@
+using System.IO;
+using System.Reflection.Metadata;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -24,12 +26,22 @@ namespace Web.Controllers
         [HttpPost("compare")]
         public async Task<IActionResult> Compare(IFormFile sourceFile, IFormFile targetFile, [FromQuery] CompareQuery query)
         {
-            var sourceRecord = Reader.Read(sourceFile.OpenReadStream(), sourceFile.FileName);
-            var targetRecord = Reader.Read(targetFile.OpenReadStream(), targetFile.FileName);
+            var sourceFileName = sourceFile?.FileName ?? "";
+            var targetFileName = targetFile?.FileName ?? "";
 
+            if (!Reader.IsFileSupported(sourceFileName) || !Reader.IsFileSupported(targetFileName))
+            {
+                return Problem(
+                    statusCode: StatusCodes.Status415UnsupportedMediaType,
+                    title: "Both provided files must be 'configuration' files");
+            }
+
+            var sourceRecord = Reader.Read(sourceFile!.OpenReadStream(), sourceFileName);
+            var targetRecord = Reader.Read(targetFile!.OpenReadStream(), targetFileName);
+            
             var comparedParams = Analyzer.Compare(sourceRecord, targetRecord);
             var filteredParams = FilterByQuery(comparedParams, query);
-
+    
             return Ok(await Task.FromResult(filteredParams));
         }
 
