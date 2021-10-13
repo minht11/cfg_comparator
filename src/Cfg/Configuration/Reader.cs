@@ -26,7 +26,7 @@ namespace Cfg.Configuration
         /// Checks if file type is supported based on it's extension.
         /// </summary>
         /// <param name="path">The configuration file path.</param>s
-        public static bool IsFileSupported(string path) => Path.GetExtension(path) == "cfg";
+        public static bool IsFileSupported(string path) => Path.GetExtension(path) == ".cfg";
 
         /// <summary>
         /// Reads and parses configuration file contents from stream.
@@ -36,9 +36,9 @@ namespace Cfg.Configuration
         /// <exception cref="Cfg.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
         public static Record Read(Stream stream, string fileName)
         {
-            if (IsFileSupported(fileName))
+            if (!IsFileSupported(fileName))
             {
-                throw new ReaderPathNotValidException("Wrong file type. Only '.cfg' files are supported.");
+                throw new ReaderNotValidFile("Wrong file type. Only '.cfg' files are supported.");
             }
 
             var contents = DecompressContents(stream);
@@ -76,25 +76,25 @@ namespace Cfg.Configuration
         {
             if (string.IsNullOrEmpty(path) || !File.Exists(path))
             {
-                throw new ReaderPathNotValidException($"Provided path '{path}' is empty or does not exit");
+                throw new ReaderNotValidFile($"Provided path '{path}' is empty or does not exit");
             }
 
             using (var fileStream = File.Open(path, FileMode.Open))
             return Read(fileStream, Path.GetFileName(path));
         }
     }
-    public class ReaderPathNotValidException : Exception
+    public class ReaderNotValidFile : Exception
     {
-        public ReaderPathNotValidException()
+        public ReaderNotValidFile()
         {
         }
 
-        public ReaderPathNotValidException(string message)
+        public ReaderNotValidFile(string message)
             : base(message)
         {
         }
 
-        public ReaderPathNotValidException(string message, Exception inner)
+        public ReaderNotValidFile(string message, Exception inner)
             : base(message, inner)
         {
         }

@@ -15,7 +15,7 @@ namespace Cfg.ConfigUI
 
         private static string GetErrorMessage(Exception err)
         {
-            return err is Configuration.ReaderPathNotValidException
+            return err is Configuration.ReaderNotValidFile
                 ? err.Message
                 : "Unknown error occured while trying to process your files";
         }
