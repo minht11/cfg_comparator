@@ -7,10 +7,29 @@ namespace Cfg.ConfigUI
 {
     public class Runner
     {
-        private static List<ComparedParameter> FilterById(List<ComparedParameter> parameters, string idStarts)
+        private IReader _reader;
+
+        private IWriter _writer;
+
+        public Runner(IReader reader, IWriter writer)
         {
-            var shouldNotFilter = string.IsNullOrEmpty(idStarts);
-            return parameters.Where((param) => shouldNotFilter || param.ID.StartsWith(idStarts)).ToList();
+            _reader = reader;
+            _writer = writer;
+        }
+
+        private static List<ComparedParameter> Filter(List<ComparedParameter> parameters, IFilterOptions options)
+        {
+            var visibility = options.Visibility;
+            var idStartsWith = options.IdStartsWith;
+
+            var shouldNotFilterById = string.IsNullOrEmpty(idStartsWith);
+
+            return parameters.Where((param) => {
+                var statusMatch = visibility == null || visibility.Contains(param.Status);
+                var idMatch = shouldNotFilterById || param.ID.StartsWith(idStartsWith!);
+
+                return statusMatch && idMatch;
+            }).ToList();
         }
 
         private static string GetErrorMessage(Exception err)
@@ -20,19 +39,21 @@ namespace Cfg.ConfigUI
                 : "Unknown error occured while trying to process your files";
         }
 
-        public static void Display(IOptions options, IDisplayImpl impl)
+        public void Start() 
         {
+            var options = _reader.Read();
+
             try {
                 var source = Configuration.Reader.Read(options.SourcePath);
                 var target = Configuration.Reader.Read(options.TargetPath);
-                var comparedParams = Configuration.Analyzer.Compare(source, target);
+                var parameters = Configuration.Analyzer.Compare(source, target);
+                var filteredParams = Filter(parameters, options);
 
-                var filteredParams = FilterById(comparedParams, options.IdStartsWith);
-
-                impl.DisplayRecordsInfo(source, target);
-                impl.DisplayComparisons(filteredParams, options.Visibility);
-            } catch (Exception err) {
-                impl.DisplayError(GetErrorMessage(err));
+                _writer.Write(filteredParams);
+            }
+            catch (Exception err)
+            {
+                _writer.WriteException(GetErrorMessage(err));
             }
         }
     }

@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Web.Models;
-using Cfg.Configuration;
 
 namespace Web.Interfaces
 {

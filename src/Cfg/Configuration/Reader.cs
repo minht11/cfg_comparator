@@ -78,6 +78,7 @@ namespace Cfg.Configuration
             {
                 throw new ReaderNotValidFile($"Provided path '{path}' is empty or does not exit");
             }
+            
 
             using (var fileStream = File.Open(path, FileMode.Open))
             return Read(fileStream, Path.GetFileName(path));

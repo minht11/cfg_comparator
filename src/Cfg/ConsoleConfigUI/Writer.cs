@@ -1,13 +1,34 @@
-using System;
 using System.Collections.Generic;
+using System;
 using Cfg.Configuration;
+using Cfg.ConfigUI;
 
 namespace Cfg.ConsoleConfigUI
 {
     using GroupedParameters = Dictionary<ComparisonStatus, List<ComparedParameter>>;
 
-    public class Output : BaseUI, ConfigUI.IDisplayImpl
-    {
+    public class Writer : BaseUI, IWriter
+    { 
+        public void WriteException(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Display(message);
+            Console.ResetColor();
+        }
+
+        public void Write(List<ComparedParameter> parameters)
+        {
+            var groupedParams = GroupByStatus(parameters);
+
+            DisplaySeparator();
+            DisplaySummary(groupedParams);
+
+            foreach (ComparisonStatus status in Enum.GetValues(typeof(ComparisonStatus)))
+            {
+                DisplayComparisonSection(groupedParams[status], status);
+            }
+        }
+
         private static GroupedParameters GroupByStatus(List<ComparedParameter> parameters)
         {
             var groupedParams = new GroupedParameters();            
@@ -38,50 +59,41 @@ namespace Cfg.ConsoleConfigUI
 
         static private void DisplaySummary(GroupedParameters groupedParams)
         {
-            var unchangedCount = groupedParams[ComparisonStatus.Unchanged].Count;
-            var modifiedCount = groupedParams[ComparisonStatus.Modified].Count;
-            var addedCount = groupedParams[ComparisonStatus.Added].Count;
-            var removedCount = groupedParams[ComparisonStatus.Removed].Count;
 
-            Console.WriteLine($"U: {unchangedCount} M: {modifiedCount} R: {addedCount} A: {removedCount}");
+            Func<ComparisonStatus, int> getCount = (status) => groupedParams[status].Count;
+
+            var unchangedCount = getCount(ComparisonStatus.Unchanged);
+            var modifiedCount = getCount(ComparisonStatus.Modified);
+            var addedCount = getCount(ComparisonStatus.Added);
+            var removedCount = getCount(ComparisonStatus.Removed);
+
+            Display($"U: {unchangedCount} M: {modifiedCount} R: {addedCount} A: {removedCount}");
         }
 
         private static void DisplayComparisonSection(List<ComparedParameter> parameters, ComparisonStatus status)
         {
             DisplaySeparator();
-            Console.WriteLine(status.ToString());
+            Display(status.ToString());
 
             Console.ForegroundColor = GetStatusColor(status);
             foreach (var item in parameters)
             {
                 var changedValue = ShouldShowChangedValue(status) ? $" -> {item.ChangedValue}" : "";
-                Console.WriteLine($"ID: {item.ID}; Value: {item.Value}{changedValue}");
+                Display($"ID: {item.ID}; Value: {item.Value}{changedValue}");
             }
             Console.ResetColor();
-        }
-
-        public void DisplayComparisons(List<ComparedParameter> parameters, List<ComparisonStatus> visibility)
-        {
-            var groupedParams = GroupByStatus(parameters);
-
-            DisplaySeparator();
-            DisplaySummary(groupedParams);
-            foreach (var status in visibility)
-            {
-                DisplayComparisonSection(groupedParams[status], status);
-            }
         }
 
         private static void DisplayRecordInfo(Record record, string name)
         {
             DisplaySeparator();
-            Console.WriteLine($"{name} configuration:");
-            Console.WriteLine(record.FileName);
+            Display($"{name} configuration:");
+            Display(record.FileName);
             DisplaySpace();
 
             foreach (var item in record.Info)
             {
-                Console.WriteLine($"{item.ID}: {item.Value}");
+                Display($"{item.ID}: {item.Value}");
             }
         }
 
@@ -89,13 +101,6 @@ namespace Cfg.ConsoleConfigUI
         {
             DisplayRecordInfo(source, "Source");
             DisplayRecordInfo(target, "Target");
-        }
-
-        public void DisplayError(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(message);
-            Console.ResetColor();
         }
     }
 }

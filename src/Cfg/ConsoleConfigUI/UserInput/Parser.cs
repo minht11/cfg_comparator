@@ -43,6 +43,12 @@ namespace Cfg.ConsoleConfigUI.UserInput
             {
                 if (ParseStatus(value) is Configuration.ComparisonStatus status)
                 {
+                    if (parsedOptions.Visibility is null)
+                    {
+                        parsedOptions.Visibility = new();
+                    }
+                    
+
                     parsedOptions.Visibility.Add(status);
                 } else if (TryParsingKeyStarts(value, out var starts))
                 {

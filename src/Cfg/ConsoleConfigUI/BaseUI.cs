@@ -13,5 +13,10 @@ namespace Cfg.ConsoleConfigUI
         {
             Console.WriteLine("");
         }
+
+        static protected void Display(string message)
+        {
+            Console.WriteLine(message);
+        }
     }
 }

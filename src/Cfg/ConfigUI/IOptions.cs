@@ -1,17 +1,11 @@
 using System.IO;
-using System.Collections.Generic;
-using Cfg.Configuration;
 
 namespace Cfg.ConfigUI
 {
-    public interface IOptions
+    public interface IOptions : IFilterOptions
     {
         string SourcePath { get; set; }
 
         string TargetPath { get; set; }
-
-        List<ComparisonStatus> Visibility { get; set; }
-
-        string IdStartsWith { get; set; }
     }
 }
