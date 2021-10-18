@@ -16,9 +16,12 @@ namespace Cfg.ConsoleConfigUI
             Console.ResetColor();
         }
 
-        public void Write(List<ComparedParameter> parameters)
+        public void Write(Record source, Record target, List<ComparedParameter> parameters)
         {
             var groupedParams = GroupByStatus(parameters);
+
+            DisplayRecord(source, "Source");
+            DisplayRecord(target, "Target");
 
             DisplaySeparator();
             DisplaySummary(groupedParams);
@@ -84,7 +87,7 @@ namespace Cfg.ConsoleConfigUI
             Console.ResetColor();
         }
 
-        private static void DisplayRecordInfo(Record record, string name)
+        private static void DisplayRecord(Record record, string name)
         {
             DisplaySeparator();
             Display($"{name} configuration:");
@@ -95,12 +98,6 @@ namespace Cfg.ConsoleConfigUI
             {
                 Display($"{item.ID}: {item.Value}");
             }
-        }
-
-        public void DisplayRecordsInfo(Record source, Record target)
-        {
-            DisplayRecordInfo(source, "Source");
-            DisplayRecordInfo(target, "Target");
         }
     }
 }

@@ -5,7 +5,7 @@ namespace Cfg.ConfigUI
 {
     public interface IWriter
     {
-        void Write(List<ComparedParameter> parameters);
+        void Write(Record source, Record target, List<ComparedParameter> parameters);
 
         void WriteException(string message);
     }

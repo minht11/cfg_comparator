@@ -43,13 +43,14 @@ namespace Cfg.ConfigUI
         {
             var options = _reader.Read();
 
-            try {
+            try
+            {
                 var source = Configuration.Reader.Read(options.SourcePath);
                 var target = Configuration.Reader.Read(options.TargetPath);
                 var parameters = Configuration.Analyzer.Compare(source, target);
                 var filteredParams = Filter(parameters, options);
 
-                _writer.Write(filteredParams);
+                _writer.Write(source, target, filteredParams);
             }
             catch (Exception err)
             {
