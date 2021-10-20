@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-namespace Cfg.ConsoleConfigUI.UserInput
+namespace Cfg.ConfigUI.UserInput
 {
-    public class Result : ConfigUI.IOptions
+    public class Result : IPathOptions, IFilterOptions
     {
         public string SourcePath { get; set; } = "";
         public string TargetPath { get; set; } = "";

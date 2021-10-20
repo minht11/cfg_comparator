@@ -1,12 +1,6 @@
-using System.Threading.Tasks.Dataflow;
-using System.IO;
-using System.Reflection.Metadata;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
-using System.Linq;
 using System;
 using Web.Models;
 using Web.Interfaces;
@@ -25,31 +19,29 @@ namespace Web.Controllers
             _configurationService = configurationService;
         }
 
-        [HttpPost("compare")]
-        public async Task<IActionResult> Compare(IFormFile sourceFile, IFormFile targetFile, [FromQuery] CompareQuery query)
+        [HttpPost("upload")]
+        public IActionResult Upload(IFormFile sourceFile, IFormFile targetFile)
         {
-            var visibility = new List<ComparisonStatus>();
-            Action<ComparisonStatus, bool?> mapVisibility = (status, value) => {
-                if (value == true) visibility.Add(status);
-            };
-            mapVisibility(ComparisonStatus.Unchanged, query.Unchanged);
-            mapVisibility(ComparisonStatus.Modified, query.Modified);
-            mapVisibility(ComparisonStatus.Added, query.Added);
-            mapVisibility(ComparisonStatus.Removed, query.Removed);
-            visibility = visibility.Count == 0 ? null : visibility;
-
-            try {
-                var result = _configurationService.CompareAndFilter(sourceFile, targetFile, new FilterOptions() {
-                    IdStartsWith = query.IdStartsWith,
-                    Visibility = visibility,
-                });
-
-                return Ok(await Task.FromResult(result));
-            } catch {
-                return Problem(
-                    statusCode: StatusCodes.Status415UnsupportedMediaType,
-                    title: "Both provided files must be 'configuration' files");
+            if (_configurationService.Upload(sourceFile, targetFile))
+            {
+                return Ok();
             }
+    
+            return Problem();
+        }
+
+        [HttpGet("compare")]
+        public IActionResult Compare([FromQuery] List<string> filterByStatus, [FromQuery] string? idStartsWith)
+        {
+            var result = _configurationService.CompareAndFilter(filterByStatus, idStartsWith);
+
+            if (result.IsSuccess())
+            {
+                return Ok(result.Data);
+            }
+
+            // TODO. Return an actual object.
+            return Problem(title: result.Message);
         }
     }
 }

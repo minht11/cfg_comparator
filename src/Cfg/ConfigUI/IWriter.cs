@@ -1,12 +1,9 @@
-using System.Collections.Generic;
-using Cfg.Configuration;
+using Cfg.Interfaces;
 
 namespace Cfg.ConfigUI
 {
     public interface IWriter
     {
-        void Write(Record source, Record target, List<ComparedParameter> parameters);
-
-        void WriteException(string message);
+        void Write(IResult<ComparisonResult> result);
     }
 }

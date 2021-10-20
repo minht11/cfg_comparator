@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cfg.Configuration;
@@ -39,10 +40,14 @@ namespace Cfg.ConfigUI
                 : "Unknown error occured while trying to process your files";
         }
 
-        public void Start() 
-        {
-            var options = _reader.Read();
+        private static ComparisonResult.ConfigInfo CreateConfigInfo(Record record) =>
+            new ComparisonResult.ConfigInfo() {
+                FileName = record.FileName,
+                Attributes = record.Info,
+            };
 
+        private void Write(UserInput.Result options)
+        {
             try
             {
                 var source = Configuration.Reader.Read(options.SourcePath);
@@ -50,11 +55,43 @@ namespace Cfg.ConfigUI
                 var parameters = Configuration.Analyzer.Compare(source, target);
                 var filteredParams = Filter(parameters, options);
 
-                _writer.Write(source, target, filteredParams);
+                var result = new ComparisonResult() {
+                    SourceInfo = CreateConfigInfo(source),
+                    TargetInfo = CreateConfigInfo(target),
+                    Parameters = filteredParams,
+                };
+
+                _writer.Write(new Result() {
+                    Data = result,
+                });
             }
             catch (Exception err)
             {
-                _writer.WriteException(GetErrorMessage(err));
+                _writer.Write(new Result() {
+                    Message = GetErrorMessage(err),
+                });
+            }
+        }
+
+        public void Start()
+        {
+            while (true)
+            {
+                var state = _reader.Read(out var input);
+    
+                if (state == RunnerStates.Exit) break;
+
+                var isOk = state == RunnerStates.Ok;
+                if (state == RunnerStates.OkNext || isOk)
+                {
+                    var parsedInput = UserInput.Parser.Parse(input);
+                    Write(parsedInput);
+                }
+
+                if (isOk)
+                {
+                    break;
+                }
             }
         }
     }

@@ -2,26 +2,28 @@ using System.Collections.Generic;
 using System;
 using Cfg.Configuration;
 using Cfg.ConfigUI;
+using Cfg.Interfaces;
 
 namespace Cfg.ConsoleConfigUI
 {
     using GroupedParameters = Dictionary<ComparisonStatus, List<ComparedParameter>>;
 
     public class Writer : BaseUI, IWriter
-    { 
-        public void WriteException(string message)
+    {
+        public void Write(IResult<ComparisonResult> result)
         {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Display(message);
-            Console.ResetColor();
-        }
+            if (!result.IsSuccess())
+            {
+                DisplayFailure(result.Message);
+                return;
+            }
 
-        public void Write(Record source, Record target, List<ComparedParameter> parameters)
-        {
-            var groupedParams = GroupByStatus(parameters);
+            var data = result.Data;
 
-            DisplayRecord(source, "Source");
-            DisplayRecord(target, "Target");
+            var groupedParams = GroupByStatus(data.Parameters);
+
+            DisplayRecord(data.SourceInfo, "Source");
+            DisplayRecord(data.TargetInfo, "Target");
 
             DisplaySeparator();
             DisplaySummary(groupedParams);
@@ -30,6 +32,13 @@ namespace Cfg.ConsoleConfigUI
             {
                 DisplayComparisonSection(groupedParams[status], status);
             }
+        }
+        
+        public void DisplayFailure(string message)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Display(message);
+            Console.ResetColor();
         }
 
         private static GroupedParameters GroupByStatus(List<ComparedParameter> parameters)
@@ -87,14 +96,14 @@ namespace Cfg.ConsoleConfigUI
             Console.ResetColor();
         }
 
-        private static void DisplayRecord(Record record, string name)
+        private static void DisplayRecord(ComparisonResult.ConfigInfo info, string name)
         {
             DisplaySeparator();
             Display($"{name} configuration:");
-            Display(record.FileName);
+            Display(info.FileName);
             DisplaySpace();
 
-            foreach (var item in record.Info)
+            foreach (var item in info.Attributes)
             {
                 Display($"{item.ID}: {item.Value}");
             }

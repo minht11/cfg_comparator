@@ -1,4 +1,5 @@
-﻿using Cfg.ConsoleConfigUI;
+﻿using System;
+using Cfg.ConsoleConfigUI;
 
 namespace Cfg
 {
@@ -7,6 +8,7 @@ namespace Cfg
         static void Main(string[] args)
         {
             var runner = new ConfigUI.Runner(new Reader(), new Writer());
+
             runner.Start();
         }
     }

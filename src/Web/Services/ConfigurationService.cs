@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
 using System.Threading.Tasks;
 using System.Linq;
 using System;
 using Web.Models;
 using Web.Interfaces;
+using Cfg.ConfigUI;
 using Cfg.Configuration;
 
 namespace Web.Services
@@ -17,48 +19,77 @@ namespace Web.Services
     {
         private readonly ILogger<ConfigurationService> _logger;
 
-        public ConfigurationService(ILogger<ConfigurationService> logger)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        private readonly Web.Models.Reader _reader;
+
+        private readonly Writer _writer;
+
+        private readonly Runner _runner;
+
+        public ConfigurationService(ILogger<ConfigurationService> logger, IHttpContextAccessor httpContext)
         {
             _logger = logger;
+            _httpContextAccessor = httpContext;
+            _reader = new();
+            _writer = new();
+            _runner =  new(_reader, _writer);
         }
 
-        public ComparisonResult CompareAndFilter(IFormFile sourceFile, IFormFile targetFile, IFilterOptions options)
+        private string CreateAndGetTempFilePath(IFormFile? formFile)
         {
-            var sourceFileName = sourceFile?.FileName ?? "";
-            var targetFileName = targetFile?.FileName ?? "";
+            if (formFile == null)
+            {
+                return "";
+            }
 
-            var sourceRecord = Reader.Read(sourceFile!.OpenReadStream(), sourceFileName);
-            var targetRecord = Reader.Read(targetFile!.OpenReadStream(), targetFileName);
-            
-            var comparedParams = Analyzer.Compare(sourceRecord, targetRecord);
-            var filteredParams = Filter(comparedParams, options);
+            var filePath = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(formFile.FileName));
 
-            return new ComparisonResult() {
-                SourceInfo = new() {
-                    FileName = sourceRecord.FileName,
-                    Info = sourceRecord.Info,
-                },
-                TargetInfo = new() {
-                    FileName = targetRecord.FileName,
-                    Info = targetRecord.Info,
-                },
-                Parameters = filteredParams,
-            };
+            using (var stream = System.IO.File.Create(filePath))
+            formFile.CopyTo(stream);
+
+            return filePath;
+        }
+        
+        public bool Upload(IFormFile sourceFile, IFormFile targetFile)
+        {
+            var session = _httpContextAccessor.HttpContext?.Session;
+            if (session == null || sourceFile == null || targetFile == null)
+            {
+                return false;
+            }
+
+            try {
+                var sourcePath = CreateAndGetTempFilePath(sourceFile);
+                var targetPath = CreateAndGetTempFilePath(sourceFile);
+
+                session.SetString("sourcePath", sourcePath);
+                session.SetString("targetPath", sourcePath);
+
+                return true;
+            } catch
+            {
+                return false;
+            }
         }
 
-        private static List<ComparedParameter> Filter(List<ComparedParameter> parameters, IFilterOptions options)
+        public Cfg.Interfaces.IResult<ComparisonResult> CompareAndFilter(List<string>? filterByStatus, string? idStartsWith)
         {
-            var visibility = options.Visibility;
-            var idStartsWith = options.IdStartsWith;
+            var session = _httpContextAccessor.HttpContext?.Session;
+            if (session == null)
+            {
+                throw new Exception("This service can only be used inside active controller");
+            }
 
-            var shouldNotFilterById = string.IsNullOrEmpty(idStartsWith);
+            var sourcePath = session.GetString("sourcePath");
+            var targetPath = session.GetString("targetPath");
 
-            return parameters.Where((param) => {
-                var statusMatch = visibility == null || visibility.Contains(param.Status);
-                var idMatch = shouldNotFilterById || param.ID.StartsWith(idStartsWith!);
-
-                return statusMatch && idMatch;
-            }).ToList();
+            _reader.AppendMessage(new() {
+                SourcePath = sourcePath,
+                TargetPath = targetPath,
+            });
+            _runner.Start();
+            return _writer.GetResult();
         }
     }
 }

@@ -2,6 +2,6 @@ namespace Cfg.ConfigUI
 {
     public interface IReader
     {
-        IOptions Read();
+        RunnerStates Read(out string value);
     }
 }

@@ -2,7 +2,7 @@ using System.IO;
 
 namespace Cfg.ConfigUI
 {
-    public interface IOptions : IFilterOptions
+    public interface IPathOptions
     {
         string SourcePath { get; set; }
 
