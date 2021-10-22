@@ -1,6 +1,6 @@
 using Cfg.Interfaces;
 
-namespace Cfg.ConfigUI
+namespace Cfg.ConfigCli
 {
     public interface IWriter
     {

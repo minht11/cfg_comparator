@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Http;
 using System;
 using Web.Models;
 using Web.Interfaces;
-using Cfg.ConfigUI;
+using Cfg.ConfigCli;
 
 namespace Web.Services
 {
-    public class ConfigurationService : IConfigurationService
+    public class ConfigService : IConfigService
     {
-        private readonly ILogger<ConfigurationService> _logger;
+        private readonly ILogger<ConfigService> _logger;
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
@@ -22,7 +22,7 @@ namespace Web.Services
 
         private readonly Runner _runner;
 
-        public ConfigurationService(ILogger<ConfigurationService> logger, IHttpContextAccessor httpContext)
+        public ConfigService(ILogger<ConfigService> logger, IHttpContextAccessor httpContext)
         {
             _logger = logger;
             _httpContextAccessor = httpContext;

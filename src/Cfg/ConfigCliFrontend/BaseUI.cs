@@ -1,6 +1,6 @@
 using System;
 
-namespace Cfg.ConsoleConfigUI
+namespace Cfg.ConfigCliFrontend
 {
     public abstract class BaseUI
     {

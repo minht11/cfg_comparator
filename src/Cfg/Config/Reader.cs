@@ -4,7 +4,7 @@ using System.IO.Compression;
 using System.IO;
 using System;
 
-namespace Cfg.Configuration
+namespace Cfg.Config
 {
     /// <summary>
     /// Class for reading configuration file data.
@@ -33,7 +33,7 @@ namespace Cfg.Configuration
         /// </summary>
         /// <param name="stream">The configuration file stream.</param>
         /// <param name="fileName">The configuration file name.</param>s
-        /// <exception cref="Cfg.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
+        /// <exception cref="Cfg.Config.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
         public static Record Read(Stream stream, string fileName)
         {
             if (!IsFileSupported(fileName))
@@ -71,7 +71,7 @@ namespace Cfg.Configuration
         /// Reads and parses configuration file contents from disk.
         /// </summary>
         /// <param name="path">The configuration file path.</param>s
-        /// <exception cref="Cfg.Configuration.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
+        /// <exception cref="Cfg.Config.ReaderPathNotValidException">Thrown when provided file path doesn't exit or file type is not supported</exception>
         public static Record Read(string path)
         {
             if (string.IsNullOrEmpty(path) || !File.Exists(path))

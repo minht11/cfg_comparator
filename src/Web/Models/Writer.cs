@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Collections.Generic;
-using Cfg.Configuration;
-using Cfg.ConfigUI;
+using Cfg.ConfigCli;
 using Cfg.Interfaces;
 
 namespace Web.Models

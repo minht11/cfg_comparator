@@ -1,4 +1,4 @@
-﻿namespace Cfg.Configuration
+﻿namespace Cfg.Config
 {
     /// <summary>
     /// Individual configuration parameter storing it's id and value.

@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using Cfg.Configuration;
+using Cfg.Config;
 
-namespace Cfg.ConfigUI
+namespace Cfg.ConfigCli
 {
     public class ComparisonResult
     {

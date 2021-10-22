@@ -1,14 +1,11 @@
 using System.Collections.Generic;
-using System;
 using Microsoft.AspNetCore.Http;
-using Web.Models;
-using Cfg.ConfigUI;
-using Cfg.Configuration;
+using Cfg.ConfigCli;
 using Cfg.Interfaces;
 
 namespace Web.Interfaces
 {
-    public interface IConfigurationService
+    public interface IConfigService
     {
         IResult<bool> Upload(IFormFile sourceFile, IFormFile targetFile);
 

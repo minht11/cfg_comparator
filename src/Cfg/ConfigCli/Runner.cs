@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Cfg.Configuration;
+using Cfg.Config;
 using Cfg.Models;
 
-namespace Cfg.ConfigUI
+namespace Cfg.ConfigCli
 {
     public class Runner
     {
@@ -35,7 +35,7 @@ namespace Cfg.ConfigUI
 
         private static string GetErrorMessage(Exception err)
         {
-            return err is Configuration.ReaderNotValidFile
+            return err is Config.ReaderNotValidFile
                 ? err.Message
                 : "Unknown error occured while trying to process your files";
         }
@@ -44,9 +44,9 @@ namespace Cfg.ConfigUI
         {
             try
             {
-                var source = Configuration.Reader.Read(options.SourcePath);
-                var target = Configuration.Reader.Read(options.TargetPath);
-                var parameters = Configuration.Analyzer.Compare(source, target);
+                var source = Config.Reader.Read(options.SourcePath);
+                var target = Config.Reader.Read(options.TargetPath);
+                var parameters = Config.Analyzer.Compare(source, target);
                 var filteredParams = Filter(parameters, options);
 
                 var result = new ComparisonResult() {

@@ -1,10 +1,9 @@
 using System;
-using Cfg.Configuration;
-using Cfg.ConfigUI;
+using Cfg.ConfigCli;
 
-namespace Cfg.ConsoleConfigUI
+namespace Cfg.ConfigCliFrontend
 {
-    using Constants = ConfigUI.Input.Constants;
+    using Constants = ConfigCli.Input.Constants;
     public class Reader : BaseUI, IReader
     {
         public (RunnerAction, string?) Read()

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System;
-using Cfg.Configuration;
-using Cfg.ConfigUI;
+using Cfg.Config;
+using Cfg.ConfigCli;
 using Cfg.Interfaces;
 
-namespace Cfg.ConsoleConfigUI
+namespace Cfg.ConfigCliFrontend
 {
     using GroupedParameters = Dictionary<ComparisonStatus, List<ComparedParameter>>;
 

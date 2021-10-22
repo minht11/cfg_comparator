@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -8,11 +7,11 @@ namespace Web.Controllers
 {
     [ApiController]
     [Route("configuration")]
-    public class ConfigurationController : ControllerBase
+    public class ConfigController : ControllerBase
     {
-        private readonly IConfigurationService _configurationService;
+        private readonly IConfigService _configurationService;
 
-        public ConfigurationController(IConfigurationService configurationService)
+        public ConfigController(IConfigService configurationService)
         {
             _configurationService = configurationService;
         }
@@ -40,7 +39,6 @@ namespace Web.Controllers
                 return Ok(result.Data);
             }
 
-            // TODO. Return an actual object.
             return Problem(title: result.Message);
         }
     }

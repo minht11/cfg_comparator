@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Threading;
-using Cfg.ConfigUI;
+using Cfg.ConfigCli;
 
 namespace Web.Models
 {
-    using InputConstants = Cfg.ConfigUI.Input.Constants;
+    using InputConstants = Cfg.ConfigCli.Input.Constants;
 
     public class Reader : IReader
     {

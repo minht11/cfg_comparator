@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Diagnostics.CodeAnalysis;
-using Cfg.Configuration;
+using Cfg.Config;
 
-namespace Cfg.ConfigUI.Input
+namespace Cfg.ConfigCli.Input
 {
     public class Parser
     {
-        static private bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<Configuration.ComparisonStatus>? filterByStatus) {
+        static private bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<Config.ComparisonStatus>? filterByStatus) {
             var notFound = !inputValue.StartsWith(Constants.StatusArg);
     
             if (notFound)
@@ -24,10 +24,10 @@ namespace Cfg.ConfigUI.Input
             foreach (var value in rawList.Split(','))
             {
                 ComparisonStatus? status = value switch {
-                    Constants.Unchanged => Configuration.ComparisonStatus.Unchanged,
-                    Constants.Modified => Configuration.ComparisonStatus.Modified,
-                    Constants.Added => Configuration.ComparisonStatus.Added,
-                    Constants.Removed => Configuration.ComparisonStatus.Removed,
+                    Constants.Unchanged => Config.ComparisonStatus.Unchanged,
+                    Constants.Modified => Config.ComparisonStatus.Modified,
+                    Constants.Added => Config.ComparisonStatus.Added,
+                    Constants.Removed => Config.ComparisonStatus.Removed,
                     _ => null,
                 };
 

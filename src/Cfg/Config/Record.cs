@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Cfg.Configuration
+namespace Cfg.Config
 {
     /// <summary>
     /// Holds parsed configuration file data.

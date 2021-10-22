@@ -1,4 +1,4 @@
-﻿namespace Cfg.ConfigUI
+﻿namespace Cfg.ConfigCli
 {
     public enum RunnerAction
     {

@@ -1,4 +1,4 @@
-namespace Cfg.ConfigUI.Input
+namespace Cfg.ConfigCli.Input
 {
     public class Constants
     {
@@ -8,6 +8,5 @@ namespace Cfg.ConfigUI.Input
         public const string Modified = "m";
         public const string StartsArg = "--starts=";
         public const string StatusArg = "--status=";
-        public const string Exit = "exit";
     }
 }
