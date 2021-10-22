@@ -22,7 +22,7 @@ namespace Cfg.ConfigUI
             public static ConfigInfo Create(Record record) => new()
             {
                 FileName = record.FileName,
-                Attributes = record.Info,
+                Attributes = record.Attributes,
             };
         }
     }

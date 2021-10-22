@@ -16,7 +16,7 @@ namespace Cfg.Configuration
         /// Information about the device.
         /// This data is not used to configure the device itself.
         /// </summary>
-        public List<Parameter> Info { get; } = new();
+        public List<Parameter> Attributes { get; } = new();
         
         /// <summary>
         /// List of various device preferences,

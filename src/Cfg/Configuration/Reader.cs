@@ -60,7 +60,7 @@ namespace Cfg.Configuration
                 }
                 else
                 {
-                    record.Info.Add(parameter);
+                    record.Attributes.Add(parameter);
                 }
             }
 
