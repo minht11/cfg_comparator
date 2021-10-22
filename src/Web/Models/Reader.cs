@@ -12,20 +12,33 @@ namespace Web.Models
 
         private readonly Queue<ReaderInput> _queue = new();
 
+        private static string GetFilterByStatusArg(List<string>? status)
+        {
+            if (status == null) {
+                return "";
+            }
+
+            var combinedStatus = string.Join(',', status);
+
+            if (string.IsNullOrEmpty(combinedStatus))
+            {
+                return "";
+            }
+
+            return $" {InputConstants.FilterByStatus}{combinedStatus}";
+        }
+
         public (Actions, string?) Read()
         {
             _mrs.WaitOne();
             var inputFromQueue = _queue.Dequeue();
             
-            var formatedInput = $"{inputFromQueue.SourcePath} {inputFromQueue.TargetPath} ";
+            var pathsArg = $"{inputFromQueue.SourcePath} {inputFromQueue.TargetPath}";
 
-            if (inputFromQueue.FilterByStatus != null)
-            {
-                var filterList = string.Join(",", inputFromQueue.FilterByStatus);
-                formatedInput += $" {InputConstants.FilterByStatus}={filterList}";
-            }
+            var statusArg = GetFilterByStatusArg(inputFromQueue.FilterByStatus);
+            var idStartsWithArg = $"{InputConstants.Starts}{inputFromQueue.IdStartsWith}";
 
-            formatedInput += $" {InputConstants.Starts}{inputFromQueue.IdStartsWith}";
+            var formatedInput = $"{pathsArg} {statusArg} {idStartsWithArg}";
 
             return (Actions.CompareAndExit, formatedInput);
         }

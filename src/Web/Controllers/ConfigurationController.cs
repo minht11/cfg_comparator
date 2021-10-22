@@ -1,10 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
-using System;
-using Web.Models;
 using Web.Interfaces;
-using Cfg.Configuration;
 
 namespace Web.Controllers
 {
@@ -31,9 +28,9 @@ namespace Web.Controllers
         }
 
         [HttpGet("compare")]
-        public IActionResult Compare([FromQuery] List<string> filterByStatus, [FromQuery] string? idStartsWith)
+        public IActionResult Compare([FromQuery] List<string> status, [FromQuery] string? idStartsWith)
         {
-            var result = _configurationService.CompareAndFilter(filterByStatus, idStartsWith);
+            var result = _configurationService.CompareAndFilter(status, idStartsWith);
 
             if (result.IsSuccess())
             {

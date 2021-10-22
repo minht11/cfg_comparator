@@ -55,10 +55,10 @@ namespace Web.Services
 
             try {
                 var sourcePath = CreateAndGetTempFilePath(sourceFile);
-                var targetPath = CreateAndGetTempFilePath(sourceFile);
+                var targetPath = CreateAndGetTempFilePath(targetFile);
 
                 session.SetString("sourcePath", sourcePath);
-                session.SetString("targetPath", sourcePath);
+                session.SetString("targetPath", targetPath);
 
                 return true;
             } catch
@@ -67,7 +67,7 @@ namespace Web.Services
             }
         }
 
-        public Cfg.Interfaces.IResult<ComparisonResult> CompareAndFilter(List<string>? filterByStatus, string? idStartsWith)
+        public Cfg.Interfaces.IResult<ComparisonResult> CompareAndFilter(List<string>? status, string? idStartsWith)
         {
             var session = _httpContextAccessor.HttpContext?.Session;
             if (session == null)
@@ -81,6 +81,8 @@ namespace Web.Services
             _reader.AppendMessage(new() {
                 SourcePath = sourcePath,
                 TargetPath = targetPath,
+                FilterByStatus = status,
+                IdStartsWith = idStartsWith,
             });
             _runner.Start();
             return _writer.GetResult();

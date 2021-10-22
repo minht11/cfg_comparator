@@ -19,6 +19,7 @@ namespace Cfg.ConfigUI.UserInput
             var rawList = inputValue.Split('=')?[1] ?? "";
             
             filterByStatus = new List<ComparisonStatus>();
+
             foreach (var value in rawList.Split(','))
             {
                 ComparisonStatus? status = value switch {
@@ -48,10 +49,10 @@ namespace Cfg.ConfigUI.UserInput
 
         static public Result Parse(string inputValue)
         {
-            var input = new List<string>(inputValue.Split(' '));
+            var input = new List<string>(inputValue.Trim().Split(' '));
             var sourcePath = input.ElementAtOrDefault(0) ?? "";
             var targetPath = input.ElementAtOrDefault(1) ?? "";
-            
+
             Result parsedOptions = new() {
                 SourcePath = sourcePath,
                 TargetPath = targetPath,
