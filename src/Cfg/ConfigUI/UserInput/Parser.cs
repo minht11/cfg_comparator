@@ -1,13 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using Cfg.Configuration;
 
 namespace Cfg.ConfigUI.UserInput
 {
     public class Parser
     {
-        static private bool ParseStatus(string inputValue, out List<Configuration.ComparisonStatus>? filterByStatus) {
+        static private bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<Configuration.ComparisonStatus>? filterByStatus) {
             var notFound = !inputValue.StartsWith(Constants.FilterByStatus);
     
             if (notFound)
@@ -39,7 +40,7 @@ namespace Cfg.ConfigUI.UserInput
             return true;
         }
 
-        static private bool TryParsingKeyStarts(string inputValue, out string value)
+        static private bool TryParsingKeyStarts(string inputValue, [NotNullWhen(true)] out string value)
         {
             var isValid = inputValue.StartsWith(Constants.Starts);
     

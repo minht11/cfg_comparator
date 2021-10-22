@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cfg.Configuration;
+using Cfg.Models;
 
 namespace Cfg.ConfigUI
 {
@@ -55,13 +55,13 @@ namespace Cfg.ConfigUI
                     Parameters = filteredParams,
                 };
 
-                _writer.Write(new Result() {
+                _writer.Write(new Result<ComparisonResult>() {
                     Data = result,
                 });
             }
             catch (Exception err)
             {
-                _writer.Write(new Result() {
+                _writer.Write(new Result<ComparisonResult>() {
                     Message = GetErrorMessage(err),
                 });
             }

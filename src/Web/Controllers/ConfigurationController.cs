@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -19,16 +20,18 @@ namespace Web.Controllers
         [HttpPost("upload")]
         public IActionResult Upload(IFormFile sourceFile, IFormFile targetFile)
         {
-            if (_configurationService.Upload(sourceFile, targetFile))
+            var result = _configurationService.Upload(sourceFile, targetFile);
+
+            if (result.Data)
             {
-                return Ok();
+                return Ok(true);
             }
     
-            return Problem();
+            return Problem(result.Message);
         }
 
         [HttpGet("compare")]
-        public IActionResult Compare([FromQuery] List<string> status, [FromQuery] string? idStartsWith)
+        public IActionResult Compare([FromQuery] List<string>? status, [FromQuery] string? idStartsWith)
         {
             var result = _configurationService.CompareAndFilter(status, idStartsWith);
 

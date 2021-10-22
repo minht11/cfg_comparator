@@ -1,5 +1,6 @@
 using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -30,13 +31,8 @@ namespace Web.Services
             _runner =  new(_reader, _writer);
         }
 
-        private string CreateAndGetTempFilePath(IFormFile? formFile)
+        private string CreateAndGetTempFilePath(IFormFile formFile)
         {
-            if (formFile == null)
-            {
-                return "";
-            }
-
             var filePath = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(formFile.FileName));
 
             using (var stream = System.IO.File.Create(filePath))
@@ -44,13 +40,23 @@ namespace Web.Services
 
             return filePath;
         }
+
+        public static bool ValidateFile([NotNullWhen(true)] IFormFile? file) =>
+            file != null && Path.GetExtension(file.FileName) == ".cfg";
         
-        public bool Upload(IFormFile sourceFile, IFormFile targetFile)
+        public Cfg.Interfaces.IResult<bool> Upload(IFormFile sourceFile, IFormFile targetFile)
         {
             var session = _httpContextAccessor.HttpContext?.Session;
-            if (session == null || sourceFile == null || targetFile == null)
+            if (session == null)
             {
                 throw new Exception("This service can only be used inside active controller");
+            }
+
+            if (!ValidateFile(sourceFile) || !ValidateFile(targetFile))
+            {
+                return new Result<bool>() {
+                    Message = "Both provided files must be valid '.cfg' files.",
+                };
             }
 
             try {
@@ -60,10 +66,14 @@ namespace Web.Services
                 session.SetString("sourcePath", sourcePath);
                 session.SetString("targetPath", targetPath);
 
-                return true;
+                return new Result<bool>() {
+                    Data = true,
+                };
             } catch
             {
-                return false;
+                return new Result<bool>() {
+                    Message = "Unknown error occured while trying to upload files",
+                };
             }
         }
 
@@ -77,6 +87,13 @@ namespace Web.Services
 
             var sourcePath = session.GetString("sourcePath");
             var targetPath = session.GetString("targetPath");
+
+            if (string.IsNullOrEmpty(sourcePath) || string.IsNullOrEmpty(sourcePath))
+            {
+                return new Result<ComparisonResult>() {
+                    Message = "In order to run comparison, source and target files must be uploaded first.",
+                };
+            }
 
             _reader.AppendMessage(new() {
                 SourcePath = sourcePath,

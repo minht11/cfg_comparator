@@ -10,7 +10,7 @@ namespace Web.Interfaces
 {
     public interface IConfigurationService
     {
-        bool Upload(IFormFile sourceFile, IFormFile targetFile);
+        IResult<bool> Upload(IFormFile sourceFile, IFormFile targetFile);
 
         IResult<ComparisonResult> CompareAndFilter(List<string>? filterByStatus, string? idStartsWith);
     }
