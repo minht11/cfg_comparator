@@ -41,9 +41,9 @@ namespace Web.Services
             return filePath;
         }
 
-        public static bool ValidateFile([NotNullWhen(true)] IFormFile? file) =>
+        public static bool ValidateFileType([NotNullWhen(true)] IFormFile? file) =>
             file != null && Path.GetExtension(file.FileName) == ".cfg";
-        
+
         public Cfg.Interfaces.IResult<bool> Upload(IFormFile sourceFile, IFormFile targetFile)
         {
             var session = _httpContextAccessor.HttpContext?.Session;
@@ -52,7 +52,7 @@ namespace Web.Services
                 throw new Exception("This service can only be used inside active controller");
             }
 
-            if (!ValidateFile(sourceFile) || !ValidateFile(targetFile))
+            if (!ValidateFileType(sourceFile) || !ValidateFileType(targetFile))
             {
                 return new Result<bool>() {
                     Message = "Both provided files must be valid '.cfg' files.",
