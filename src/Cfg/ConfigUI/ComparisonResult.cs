@@ -1,24 +1,29 @@
-﻿using System.Threading.Tasks;
-using System;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
-using System.Linq;
 using Cfg.Configuration;
 
 namespace Cfg.ConfigUI
 {
     public class ComparisonResult
     {
-        public ConfigInfo SourceInfo { get; set; } = new();
+        [Required]
+        public ConfigInfo SourceInfo { get; init; } = default!;
     
-        public ConfigInfo TargetInfo { get; set; } = new();
+        public ConfigInfo TargetInfo { get; init; } = default!;
         
-        public List<ComparedParameter> Parameters { get; set; } = new();
+        public List<ComparedParameter> Parameters { get; init; } = default!;
 
         public class ConfigInfo
         {
-            public string FileName { get; set; } = "";
+            public string FileName { get; init; } = default!;
 
-            public List<Parameter> Attributes { get; set; } = new();
+            public List<Parameter> Attributes { get; init; } = default!;
+
+            public static ConfigInfo Create(Record record) => new()
+            {
+                FileName = record.FileName,
+                Attributes = record.Info,
+            };
         }
     }
 }

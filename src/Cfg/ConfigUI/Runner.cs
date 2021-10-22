@@ -40,12 +40,6 @@ namespace Cfg.ConfigUI
                 : "Unknown error occured while trying to process your files";
         }
 
-        private static ComparisonResult.ConfigInfo CreateConfigInfo(Record record) =>
-            new ComparisonResult.ConfigInfo() {
-                FileName = record.FileName,
-                Attributes = record.Info,
-            };
-
         private void Write(UserInput.Result options)
         {
             try
@@ -56,8 +50,8 @@ namespace Cfg.ConfigUI
                 var filteredParams = Filter(parameters, options);
 
                 var result = new ComparisonResult() {
-                    SourceInfo = CreateConfigInfo(source),
-                    TargetInfo = CreateConfigInfo(target),
+                    SourceInfo = ComparisonResult.ConfigInfo.Create(source),
+                    TargetInfo = ComparisonResult.ConfigInfo.Create(target),
                     Parameters = filteredParams,
                 };
 
