@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Cfg.ConfigUI.Input
 {
-    public class Result : IPathOptions, IFilterOptions
+    public class Result : IFilterOptions
     {
         public string SourcePath { get; set; } = "";
         public string TargetPath { get; set; } = "";
