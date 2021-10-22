@@ -9,7 +9,7 @@ namespace Cfg.ConfigUI.Input
     public class Parser
     {
         static private bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<Configuration.ComparisonStatus>? filterByStatus) {
-            var notFound = !inputValue.StartsWith(Constants.FilterByStatus);
+            var notFound = !inputValue.StartsWith(Constants.StatusArg);
     
             if (notFound)
             {
@@ -42,7 +42,7 @@ namespace Cfg.ConfigUI.Input
 
         static private bool TryParsingKeyStarts(string inputValue, [NotNullWhen(true)] out string value)
         {
-            var isValid = inputValue.StartsWith(Constants.Starts);
+            var isValid = inputValue.StartsWith(Constants.StartsArg);
     
             value = isValid ? (inputValue.Split('=')?[1] ?? "") : "";
             return isValid;

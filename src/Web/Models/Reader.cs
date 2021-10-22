@@ -25,7 +25,7 @@ namespace Web.Models
                 return "";
             }
 
-            return $" {InputConstants.FilterByStatus}{combinedStatus}";
+            return $" {InputConstants.StatusArg}{combinedStatus}";
         }
 
         public (RunnerAction, string?) Read()
@@ -36,7 +36,7 @@ namespace Web.Models
             var pathsArg = $"{inputFromQueue.SourcePath} {inputFromQueue.TargetPath}";
 
             var statusArg = GetFilterByStatusArg(inputFromQueue.FilterByStatus);
-            var idStartsWithArg = $"{InputConstants.Starts}{inputFromQueue.IdStartsWith}";
+            var idStartsWithArg = $"{InputConstants.StartsArg}{inputFromQueue.IdStartsWith}";
 
             var formatedInput = $"{pathsArg} {statusArg} {idStartsWithArg}";
 
