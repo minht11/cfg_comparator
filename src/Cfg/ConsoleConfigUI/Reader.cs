@@ -12,13 +12,13 @@ namespace Cfg.ConsoleConfigUI
             DisplaySeparator();
             Display("Input source and target file locations");
             Display("Options:");
-            Display($"{ConfigUI.UserInput.Constants.FilterByStatus}: show only specific status paramaters:");
-            Display($"  {ConfigUI.UserInput.Constants.Unchanged} : unchanged");
-            Display($"  {ConfigUI.UserInput.Constants.Added} : added");
-            Display($"  {ConfigUI.UserInput.Constants.Removed} : removed");
-            Display($"  {ConfigUI.UserInput.Constants.Modified} : modified");
+            Display($"{ConfigUI.Input.Constants.FilterByStatus}: show only specific status paramaters:");
+            Display($"  {ConfigUI.Input.Constants.Unchanged} : unchanged");
+            Display($"  {ConfigUI.Input.Constants.Added} : added");
+            Display($"  {ConfigUI.Input.Constants.Removed} : removed");
+            Display($"  {ConfigUI.Input.Constants.Modified} : modified");
     
-            Display($"{ConfigUI.UserInput.Constants.Starts}* : keys should start with *");
+            Display($"{ConfigUI.Input.Constants.Starts}* : keys should start with *");
             DisplaySeparator();
             Display($"Type '{Exit}' to finish");
             DisplaySeparator();

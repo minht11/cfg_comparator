@@ -40,7 +40,7 @@ namespace Cfg.ConfigUI
                 : "Unknown error occured while trying to process your files";
         }
 
-        private void Write(UserInput.Result options)
+        private void Write(Input.Result options)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace Cfg.ConfigUI
                 var compareAndExit = nextAction == RunnerAction.CompareAndExit;
                 if (nextAction == RunnerAction.Compare || compareAndExit)
                 {
-                    var parsedInput = UserInput.Parser.Parse(value ?? "");
+                    var parsedInput = Input.Parser.Parse(value ?? "");
                     Write(parsedInput);
                 }
 

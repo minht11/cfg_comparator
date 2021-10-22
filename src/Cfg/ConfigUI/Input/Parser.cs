@@ -4,7 +4,7 @@ using System.Linq;
 using System.Diagnostics.CodeAnalysis;
 using Cfg.Configuration;
 
-namespace Cfg.ConfigUI.UserInput
+namespace Cfg.ConfigUI.Input
 {
     public class Parser
     {

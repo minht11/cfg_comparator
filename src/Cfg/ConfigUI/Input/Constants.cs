@@ -1,4 +1,4 @@
-namespace Cfg.ConfigUI.UserInput
+namespace Cfg.ConfigUI.Input
 {
     public class Constants
     {

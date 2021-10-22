@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Cfg.ConfigUI.UserInput
+namespace Cfg.ConfigUI.Input
 {
     public class Result : IPathOptions, IFilterOptions
     {

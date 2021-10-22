@@ -4,7 +4,7 @@ using Cfg.ConfigUI;
 
 namespace Web.Models
 {
-    using InputConstants = Cfg.ConfigUI.UserInput.Constants;
+    using InputConstants = Cfg.ConfigUI.Input.Constants;
 
     public class Reader : IReader
     {
