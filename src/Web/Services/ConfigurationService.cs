@@ -1,17 +1,11 @@
 using System.IO;
-using System.Reflection.Metadata;
 using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Session;
-using System.Threading.Tasks;
-using System.Linq;
 using System;
 using Web.Models;
 using Web.Interfaces;
 using Cfg.ConfigUI;
-using Cfg.Configuration;
 
 namespace Web.Services
 {
@@ -56,7 +50,7 @@ namespace Web.Services
             var session = _httpContextAccessor.HttpContext?.Session;
             if (session == null || sourceFile == null || targetFile == null)
             {
-                return false;
+                throw new Exception("This service can only be used inside active controller");
             }
 
             try {
