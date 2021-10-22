@@ -1,6 +1,6 @@
 ﻿namespace Cfg.ConfigUI
 {
-    public enum Actions
+    public enum RunnerAction
     {
         Compare,
         CompareAndExit,

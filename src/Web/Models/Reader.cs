@@ -28,7 +28,7 @@ namespace Web.Models
             return $" {InputConstants.FilterByStatus}{combinedStatus}";
         }
 
-        public (Actions, string?) Read()
+        public (RunnerAction, string?) Read()
         {
             _mrs.WaitOne();
             var inputFromQueue = _queue.Dequeue();
@@ -40,7 +40,7 @@ namespace Web.Models
 
             var formatedInput = $"{pathsArg} {statusArg} {idStartsWithArg}";
 
-            return (Actions.CompareAndExit, formatedInput);
+            return (RunnerAction.CompareAndExit, formatedInput);
         }
 
         public void AppendMessage(ReaderInput message)

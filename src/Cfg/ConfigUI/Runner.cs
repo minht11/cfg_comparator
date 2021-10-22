@@ -73,10 +73,10 @@ namespace Cfg.ConfigUI
             {
                 var (nextAction, value) = _reader.Read();
     
-                if (nextAction == Actions.Exit) break;
+                if (nextAction == RunnerAction.Exit) break;
 
-                var compareAndExit = nextAction == Actions.CompareAndExit;
-                if (nextAction == Actions.Compare || compareAndExit)
+                var compareAndExit = nextAction == RunnerAction.CompareAndExit;
+                if (nextAction == RunnerAction.Compare || compareAndExit)
                 {
                     var parsedInput = UserInput.Parser.Parse(value ?? "");
                     Write(parsedInput);

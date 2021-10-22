@@ -6,7 +6,7 @@ namespace Cfg.ConsoleConfigUI
 {
     public class Reader : BaseUI, IReader
     {
-        public (Actions, string?) Read()
+        public (RunnerAction, string?) Read()
         {
             const string Exit = "exit";
             DisplaySeparator();
@@ -27,10 +27,10 @@ namespace Cfg.ConsoleConfigUI
 
             if (input == Exit)
             {
-                return (Actions.Exit, null);
+                return (RunnerAction.Exit, null);
             }
 
-            return (Actions.Compare, input);
+            return (RunnerAction.Compare, input);
         }
     }
 }
