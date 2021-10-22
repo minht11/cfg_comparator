@@ -6,7 +6,7 @@ namespace Cfg.ConsoleConfigUI
 {
     public class Reader : BaseUI, IReader
     {
-        public RunnerStates Read(out string input)
+        public (Actions, string?) Read()
         {
             const string Exit = "exit";
             DisplaySeparator();
@@ -23,14 +23,14 @@ namespace Cfg.ConsoleConfigUI
             Display($"Type '{Exit}' to finish");
             DisplaySeparator();
 
-            input = Console.ReadLine() ?? "";
+            var input = Console.ReadLine() ?? "";
 
             if (input == Exit)
             {
-                return RunnerStates.Exit;
+                return (Actions.Exit, null);
             }
 
-            return RunnerStates.OkNext;
+            return (Actions.Compare, input);
         }
     }
 }

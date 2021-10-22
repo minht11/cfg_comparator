@@ -15,7 +15,7 @@ namespace Web.Services
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly Web.Models.Reader _reader;
+        private readonly Reader _reader;
 
         private readonly Writer _writer;
 

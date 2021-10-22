@@ -12,24 +12,22 @@ namespace Web.Models
 
         private readonly Queue<ReaderInput> _queue = new();
 
-        public RunnerStates Read(out string inputMessage)
+        public (Actions, string?) Read()
         {
             _mrs.WaitOne();
             var inputFromQueue = _queue.Dequeue();
             
-            var baseInput = $"{inputFromQueue.SourcePath} {inputFromQueue.TargetPath} ";
+            var formatedInput = $"{inputFromQueue.SourcePath} {inputFromQueue.TargetPath} ";
 
             if (inputFromQueue.FilterByStatus != null)
             {
                 var filterList = string.Join(",", inputFromQueue.FilterByStatus);
-                baseInput += $" {InputConstants.FilterByStatus}={filterList}";
+                formatedInput += $" {InputConstants.FilterByStatus}={filterList}";
             }
 
-            baseInput += $" {InputConstants.Starts}{inputFromQueue.IdStartsWith}";
+            formatedInput += $" {InputConstants.Starts}{inputFromQueue.IdStartsWith}";
 
-            inputMessage = baseInput;
-
-            return RunnerStates.Ok;
+            return (Actions.CompareAndExit, formatedInput);
         }
 
         public void AppendMessage(ReaderInput message)
