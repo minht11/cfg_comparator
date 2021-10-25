@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System;
 using Cfg.Config;
 using Cfg.ConfigCli;
-using Cfg.Interfaces;
 
 namespace Cfg.ConfigCliFrontend
 {
@@ -10,7 +9,7 @@ namespace Cfg.ConfigCliFrontend
 
     public class Writer : BaseUI, IWriter
     {
-        public void Write(IResult<ComparisonResult> result)
+        public void Write(ComparisonResult result)
         {
             if (!result.IsSuccess())
             {
@@ -96,7 +95,7 @@ namespace Cfg.ConfigCliFrontend
             Console.ResetColor();
         }
 
-        private static void DisplayRecord(ComparisonResult.ConfigInfo info, string name)
+        private static void DisplayRecord(Comparison.ConfigInfo info, string name)
         {
             DisplaySeparator();
             Display($"{name} configuration:");

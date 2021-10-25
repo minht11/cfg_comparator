@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Cfg.Config;
-using Cfg.Models;
 
 namespace Cfg.ConfigCli
 {
@@ -49,19 +48,19 @@ namespace Cfg.ConfigCli
                 var parameters = Analyzer.Compare(source, target);
                 var filteredParams = Filter(parameters, options);
 
-                var result = new ComparisonResult() {
-                    SourceInfo = ComparisonResult.ConfigInfo.Create(source),
-                    TargetInfo = ComparisonResult.ConfigInfo.Create(target),
+                var comparison = new Comparison() {
+                    SourceInfo = Comparison.ConfigInfo.Create(source),
+                    TargetInfo = Comparison.ConfigInfo.Create(target),
                     Parameters = filteredParams,
                 };
 
-                _writer.Write(new Result<ComparisonResult>() {
-                    Data = result,
+                _writer.Write(new ComparisonResult() {
+                    Data = comparison,
                 });
             }
             catch (Exception err)
             {
-                _writer.Write(new Result<ComparisonResult>() {
+                _writer.Write(new ComparisonResult() {
                     Message = GetErrorMessage(err),
                 });
             }

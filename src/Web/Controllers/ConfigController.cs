@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -19,14 +20,20 @@ namespace Web.Controllers
         [HttpPost("upload")]
         public IActionResult Upload(IFormFile sourceFile, IFormFile targetFile)
         {
-            var result = _configurationService.Upload(sourceFile, targetFile);
-
-            if (result.Data)
+            try
             {
+                _configurationService.Upload(sourceFile, targetFile);
                 return Ok(true);
             }
-    
-            return Problem(result.Message);
+            catch (Exception err)
+            {
+                if (err is ArgumentException)
+                {
+                    return Problem("Both provided files must be valid '.cfg' files.");
+                }
+
+                return Problem("Unknown error occured while trying to upload your files.");
+            }
         }
 
         [HttpGet("compare")]

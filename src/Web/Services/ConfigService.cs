@@ -44,7 +44,7 @@ namespace Web.Services
         public static bool ValidateFileType([NotNullWhen(true)] IFormFile? file) =>
             file != null && Path.GetExtension(file.FileName) == ".cfg";
 
-        public Cfg.Interfaces.IResult<bool> Upload(IFormFile sourceFile, IFormFile targetFile)
+        public void Upload(IFormFile sourceFile, IFormFile targetFile)
         {
             var session = _httpContextAccessor.HttpContext?.Session;
             if (session == null)
@@ -54,30 +54,17 @@ namespace Web.Services
 
             if (!ValidateFileType(sourceFile) || !ValidateFileType(targetFile))
             {
-                return new Result<bool>() {
-                    Message = "Both provided files must be valid '.cfg' files.",
-                };
+                throw new ArgumentException("Both provided files must be valid '.cfg' files.");
             }
 
-            try {
-                var sourcePath = CreateAndGetTempFilePath(sourceFile);
-                var targetPath = CreateAndGetTempFilePath(targetFile);
+            var sourcePath = CreateAndGetTempFilePath(sourceFile);
+            var targetPath = CreateAndGetTempFilePath(targetFile);
 
-                session.SetString("sourcePath", sourcePath);
-                session.SetString("targetPath", targetPath);
-
-                return new Result<bool>() {
-                    Data = true,
-                };
-            } catch
-            {
-                return new Result<bool>() {
-                    Message = "Unknown error occured while trying to upload files",
-                };
-            }
+            session.SetString("sourcePath", sourcePath);
+            session.SetString("targetPath", targetPath);
         }
 
-        public Cfg.Interfaces.IResult<ComparisonResult> CompareAndFilter(List<string>? status, string? idStartsWith)
+        public ComparisonResult CompareAndFilter(List<string>? status, string? idStartsWith)
         {
             var session = _httpContextAccessor.HttpContext?.Session;
             if (session == null)
@@ -90,7 +77,7 @@ namespace Web.Services
 
             if (string.IsNullOrEmpty(sourcePath) || string.IsNullOrEmpty(sourcePath))
             {
-                return new Result<ComparisonResult>() {
+                return new ComparisonResult() {
                     Message = "In order to run comparison, source and target files must be uploaded first.",
                 };
             }
