@@ -7,9 +7,9 @@ namespace Cfg.ConfigCli
 {
     public class Runner
     {
-        private IReader _reader;
+        private readonly IReader _reader;
 
-        private IWriter _writer;
+        private readonly IWriter _writer;
 
         public Runner(IReader reader, IWriter writer)
         {
