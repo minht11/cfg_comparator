@@ -23,7 +23,7 @@ namespace Cfg.ConfigCliFrontend
             Display($"Type '{Exit}' to finish");
             DisplaySeparator();
 
-            var input = Console.ReadLine() ?? "";
+            var input = Console.ReadLine();
 
             if (input == Exit)
             {
