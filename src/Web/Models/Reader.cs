@@ -10,7 +10,7 @@ namespace Web.Models
     {
         private readonly ManualResetEvent _mrs = new(false);
 
-        private readonly Queue<ReaderInput> _queue = new();
+        private readonly Queue<InputOptions> _queue = new();
 
         private static string GetFilterByStatusArg(List<string>? status)
         {
@@ -43,9 +43,9 @@ namespace Web.Models
             return (RunnerAction.CompareAndExit, formatedInput);
         }
 
-        public void AppendMessage(ReaderInput message)
+        public void AppendMessage(InputOptions options)
         {
-            _queue.Enqueue(message);
+            _queue.Enqueue(options);
             _mrs.Set();
         }
     }

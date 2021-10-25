@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Web.Models
 {
-    public class ReaderInput
+    public class InputOptions
     {
         public string SourcePath { get; init; } = "";
 
