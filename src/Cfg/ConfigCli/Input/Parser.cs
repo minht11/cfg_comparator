@@ -8,7 +8,8 @@ namespace Cfg.ConfigCli.Input
 {
     public class Parser
     {
-        static private bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<Config.ComparisonStatus>? filterByStatus) {
+        static private bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<ComparisonStatus>? filterByStatus)
+        {
             var notFound = !inputValue.StartsWith(Constants.StatusArg);
     
             if (notFound)
@@ -24,10 +25,10 @@ namespace Cfg.ConfigCli.Input
             foreach (var value in rawList.Split(','))
             {
                 ComparisonStatus? status = value switch {
-                    Constants.Unchanged => Config.ComparisonStatus.Unchanged,
-                    Constants.Modified => Config.ComparisonStatus.Modified,
-                    Constants.Added => Config.ComparisonStatus.Added,
-                    Constants.Removed => Config.ComparisonStatus.Removed,
+                    Constants.Unchanged => ComparisonStatus.Unchanged,
+                    Constants.Modified => ComparisonStatus.Modified,
+                    Constants.Added => ComparisonStatus.Added,
+                    Constants.Removed => ComparisonStatus.Removed,
                     _ => null,
                 };
 

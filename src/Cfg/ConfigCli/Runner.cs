@@ -35,7 +35,7 @@ namespace Cfg.ConfigCli
 
         private static string GetErrorMessage(Exception err)
         {
-            return err is Config.ReaderNotValidFile
+            return err is ReaderNotValidFile
                 ? err.Message
                 : "Unknown error occured while trying to process your files";
         }
@@ -44,9 +44,9 @@ namespace Cfg.ConfigCli
         {
             try
             {
-                var source = Config.Reader.Read(options.SourcePath);
-                var target = Config.Reader.Read(options.TargetPath);
-                var parameters = Config.Analyzer.Compare(source, target);
+                var source = Reader.Read(options.SourcePath);
+                var target = Reader.Read(options.TargetPath);
+                var parameters = Analyzer.Compare(source, target);
                 var filteredParams = Filter(parameters, options);
 
                 var result = new ComparisonResult() {

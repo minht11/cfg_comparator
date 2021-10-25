@@ -35,7 +35,7 @@ namespace Web.Services
         {
             var filePath = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(formFile.FileName));
 
-            using (var stream = System.IO.File.Create(filePath))
+            using (var stream = File.Create(filePath))
             formFile.CopyTo(stream);
 
             return filePath;
