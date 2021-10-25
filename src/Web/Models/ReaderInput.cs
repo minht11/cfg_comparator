@@ -4,9 +4,9 @@ namespace Web.Models
 {
     public class ReaderInput
     {
-        public string? SourcePath { get; init; }
+        public string SourcePath { get; init; } = "";
 
-        public string? TargetPath { get; init; }
+        public string TargetPath { get; init; } = "";
 
         public List<string>? FilterByStatus { get; init; }
 

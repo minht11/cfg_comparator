@@ -6,7 +6,6 @@ namespace Cfg.ConfigCli
 {
     public class Comparison
     {
-        [Required]
         public ConfigInfo SourceInfo { get; init; } = default!;
     
         public ConfigInfo TargetInfo { get; init; } = default!;
