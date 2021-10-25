@@ -21,7 +21,7 @@ namespace Web.Controllers
         [HttpPost("upload")]
         public IActionResult Upload(IFormFile sourceFile, IFormFile targetFile)
         {
-            if (!sourceFile.IsConfigurationFile() || targetFile.IsConfigurationFile())
+            if (!sourceFile.IsConfigurationFile() || !targetFile.IsConfigurationFile())
             {
                 return Problem("Both provided files must be valid '.cfg' files.");
             }
