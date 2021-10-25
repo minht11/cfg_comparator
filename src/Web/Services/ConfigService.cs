@@ -1,6 +1,4 @@
-using System.IO;
 using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Http;
 using Web.Models;
 using Web.Interfaces;
 using Cfg.ConfigCli;
@@ -23,16 +21,6 @@ namespace Web.Services
             _reader = new();
             _writer = new();
             _runner =  new(_reader, _writer);
-        }
-
-        private string CreateAndGetTempFilePath(IFormFile formFile)
-        {
-            var filePath = Path.ChangeExtension(Path.GetTempFileName(), Path.GetExtension(formFile.FileName));
-
-            using (var stream = File.Create(filePath))
-            formFile.CopyTo(stream);
-
-            return filePath;
         }
 
         public ComparisonResult CompareAndFilter(InputOptions input)

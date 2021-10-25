@@ -35,6 +35,8 @@ namespace Web.Controllers
 
                 session.SetString("sourcePath", sourcePath);
                 session.SetString("targetPath", targetPath);
+                session.SetString("sourceRealFileName", sourceFile.FileName);
+                session.SetString("targetRealFileName", targetFile.FileName);
 
                 return Ok(true);
             }
@@ -49,8 +51,11 @@ namespace Web.Controllers
         {
             var session = HttpContext.Session;
 
-            var sourcePath = session.GetString("sourcePath");
-            var targetPath = session.GetString("targetPath");
+            var targetPath = session.GetString("sourcePath");
+            var sourcePath = session.GetString("targetPath");
+
+            var sourceRealFileName = session.GetString("targetRealFileName");
+            var targetRealFileName = session.GetString("sourceRealFileName");
 
             if (string.IsNullOrEmpty(sourcePath) || string.IsNullOrEmpty(targetPath))
             {
@@ -66,7 +71,18 @@ namespace Web.Controllers
 
             if (result.IsSuccess())
             {
-                return Ok(result.Data);
+                var data = result.Data;
+                return Ok(new Cfg.ConfigCli.Comparison() {
+                    Parameters = data.Parameters,
+                    SourceInfo = new() {
+                        FileName = sourceRealFileName,
+                        Attributes = data.SourceInfo.Attributes,
+                    },
+                    TargetInfo = new() {
+                        FileName = targetRealFileName,
+                        Attributes = data.TargetInfo.Attributes,
+                    },
+                });
             }
 
             return Problem(title: result.Message);
