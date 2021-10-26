@@ -8,7 +8,9 @@ namespace Cfg.ConfigCli.Input
 {
     public class Parser
     {
-        static private bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<ComparisonStatus>? filterByStatus)
+        private static string GetValueAfterEqual(string value) => value.Split('=')?[1] ?? "";
+
+        private static bool ParseStatus(string inputValue, [NotNullWhen(true)] out List<ComparisonStatus>? filterByStatus)
         {
             var notFound = !inputValue.StartsWith(Constants.StatusArg);
     
@@ -18,11 +20,11 @@ namespace Cfg.ConfigCli.Input
                 return false;
             }
 
-            var rawList = inputValue.Split('=')?[1] ?? "";
+            var rawValues = GetValueAfterEqual(inputValue);
             
             filterByStatus = new List<ComparisonStatus>();
 
-            foreach (var value in rawList.Split(','))
+            foreach (var value in rawValues.Split(','))
             {
                 ComparisonStatus? status = value switch {
                     Constants.Unchanged => ComparisonStatus.Unchanged,
@@ -41,15 +43,15 @@ namespace Cfg.ConfigCli.Input
             return true;
         }
 
-        static private bool TryParsingKeyStarts(string inputValue, [NotNullWhen(true)] out string value)
+        private static bool TryParsingKeyStarts(string inputValue, [NotNullWhen(true)] out string value)
         {
             var isValid = inputValue.StartsWith(Constants.StartsArg);
     
-            value = isValid ? (inputValue.Split('=')?[1] ?? "") : "";
+            value = isValid ? GetValueAfterEqual(inputValue) : "";
             return isValid;
         }
 
-        static public Result Parse(string inputValue)
+        public static Result Parse(string inputValue)
         {
             var input = new List<string>(inputValue.Trim().Split(' '));
             var sourcePath = input.ElementAtOrDefault(0) ?? "";
