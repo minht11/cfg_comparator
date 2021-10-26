@@ -68,7 +68,7 @@ namespace Cfg.ConfigCliFrontend
         private static bool ShouldShowChangedValue(ComparisonStatus status) =>
             status == ComparisonStatus.Modified;
 
-        static private void DisplaySummary(GroupedParameters groupedParams)
+        private static void DisplaySummary(GroupedParameters groupedParams)
         {
 
             Func<ComparisonStatus, int> getCount = (status) => groupedParams[status].Count;
