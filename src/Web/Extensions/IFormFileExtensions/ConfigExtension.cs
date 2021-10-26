@@ -5,7 +5,7 @@ namespace Web.Extensions.IFormFileExtensions
 {
     public static class ConfigExtension
     {
-		public static bool IsConfigurationFile(this IFormFile? file) =>
-            file != null && Path.GetExtension(file.FileName) == ".cfg";
+		public static bool IsConfigurationFile(this IFormFile file) =>
+            Path.GetExtension(file.FileName) == ".cfg";
 	}
 }
